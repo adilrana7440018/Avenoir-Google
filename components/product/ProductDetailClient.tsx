@@ -49,6 +49,16 @@ interface ProductDetailClientProps {
   relatedProducts: any[];
 }
 
+const categoryMap: Record<string, string> = {
+  cases: 'Phone Cases',
+  chargers: 'GaN Chargers',
+  cables: 'Braided Cables',
+  audio: 'AirPods Shells',
+  protectors: 'Screen Glass',
+  accessories: 'MagSafe Accessories',
+  all: 'All Hardware',
+};
+
 export default function ProductDetailClient({ product, relatedProducts }: ProductDetailClientProps) {
   const { addItem, wishlist, toggleWishlist } = useStore();
   const [mounted, setMounted] = useState(false);
@@ -147,17 +157,17 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   };
 
   return (
-    <div className="mesh-bg min-h-screen py-10 md:py-16 pb-28 md:pb-16">
+    <div className="bg-bg-base min-h-screen py-10 md:py-16 pb-28 md:pb-16">
       <div className="max-w-7xl mx-auto px-6 space-y-12">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 text-xs text-text-secondary font-mono">
-          <Link href="/" className="hover:text-white transition-colors">HOME</Link>
+          <Link href="/" className="hover:text-text-primary transition-colors">HOME</Link>
           <span>/</span>
-          <Link href={`/products/${product.category}`} className="hover:text-white uppercase transition-colors">
-            {product.category}
+          <Link href={`/products/${product.category}`} className="hover:text-text-primary uppercase transition-colors">
+            {categoryMap[product.category] || product.category}
           </Link>
           <span>/</span>
-          <span className="text-white truncate max-w-[200px]">{product.name}</span>
+          <span className="text-text-primary truncate max-w-[200px]">{product.name}</span>
         </div>
 
         {/* Product presentation */}
@@ -166,7 +176,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           <div className="lg:col-span-7 space-y-4">
             {/* Main view with zoom */}
             <div
-              className="relative aspect-square w-full bg-surface-card border border-white/10 rounded-3xl overflow-hidden cursor-zoom-in"
+              className="relative aspect-square w-full bg-bg-surface border border-border-subtle rounded-3xl overflow-hidden cursor-zoom-in shadow-sm"
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
             >
@@ -196,8 +206,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   <button
                     key={i}
                     onClick={() => setActiveImage(img)}
-                    className={`relative w-20 h-20 rounded-2xl overflow-hidden border bg-surface-card flex-shrink-0 transition-premium ${
-                      activeImage === img ? 'border-accent ring-1 ring-accent' : 'border-white/10 opacity-70 hover:opacity-100'
+                    className={`relative w-20 h-20 rounded-2xl overflow-hidden border bg-bg-surface flex-shrink-0 transition-premium ${
+                      activeImage === img ? 'border-accent-primary ring-1 ring-accent-primary' : 'border-border-subtle opacity-70 hover:opacity-100'
                     }`}
                   >
                     <Image
@@ -216,10 +226,10 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           {/* Details & CTA Panel - Column 5 */}
           <div className="lg:col-span-5 space-y-8">
             <div className="space-y-4">
-              <span className="text-xs uppercase font-bold text-accent font-mono tracking-widest bg-accent/10 px-3 py-1 rounded-full border border-accent/20 w-fit block">
-                {product.category} Division
+              <span className="text-xs uppercase font-bold text-accent-primary font-mono tracking-widest bg-accent-primary-soft px-3 py-1 rounded-full border border-accent-primary/20 w-fit block">
+                {categoryMap[product.category] || product.category}
               </span>
-              <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white leading-tight">
+              <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-text-primary leading-tight">
                 {product.name}
               </h1>
 
@@ -228,7 +238,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 <div className="flex items-center gap-2">
                   {product.discountPrice ? (
                     <>
-                      <span className="text-2xl font-bold text-accent font-mono">
+                      <span className="text-2xl font-bold text-accent-primary font-mono">
                         ${currentPrice.toFixed(2)}
                       </span>
                       <span className="text-sm text-text-secondary line-through font-mono">
@@ -236,24 +246,24 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                       </span>
                     </>
                   ) : (
-                    <span className="text-2xl font-bold text-white font-mono">
+                    <span className="text-2xl font-bold text-text-primary font-mono">
                       ${currentPrice.toFixed(2)}
                     </span>
                   )}
                 </div>
-                <div className="h-4 w-px bg-white/10" />
+                <div className="h-4 w-px bg-border-subtle" />
                 <div className="flex items-center gap-1.5">
-                  <div className="flex text-accent">
+                  <div className="flex text-accent-primary">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
                         className={`w-4 h-4 ${
-                          i < Math.floor(product.rating) ? 'fill-accent' : 'opacity-30'
+                          i < Math.floor(product.rating) ? 'fill-accent-primary' : 'opacity-30'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-xs font-semibold text-white font-mono">{product.rating}</span>
+                  <span className="text-xs font-semibold text-text-primary font-mono">{product.rating}</span>
                   <span className="text-xs text-text-secondary">({product.reviewsCount} reviews)</span>
                 </div>
               </div>
@@ -264,7 +274,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             </div>
 
             {/* Config options */}
-            <div className="space-y-6 pt-6 border-t border-white/5">
+            <div className="space-y-6 pt-6 border-t border-border-subtle">
               {/* Compatibility Dropdown */}
               {compatOptions.length > 0 && compatOptions[0] !== '' && (
                 <div className="space-y-2">
@@ -274,7 +284,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   <select
                     value={selectedDevice}
                     onChange={(e) => setSelectedDevice(e.target.value)}
-                    className="w-full bg-surface-card border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent font-display cursor-pointer"
+                    className="w-full bg-bg-surface border border-border-subtle rounded-xl px-4 py-3 text-sm text-text-primary focus:outline-none focus:border-accent-primary font-display cursor-pointer"
                   >
                     {compatOptions.map((device) => (
                       <option key={device} value={device}>
@@ -290,7 +300,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                 <div className="space-y-3">
                   <div className="flex justify-between text-[10px] uppercase font-bold tracking-wider font-mono">
                     <span className="text-text-secondary">Colorway</span>
-                    <span className="text-white font-medium">{selectedVariant?.color}</span>
+                    <span className="text-text-primary font-medium">{selectedVariant?.color}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     {product.variants.map((variant) => (
@@ -298,16 +308,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                         key={variant.id}
                         onClick={() => setSelectedVariant(variant)}
                         className={`group relative p-1 rounded-full border transition-premium flex items-center justify-center ${
-                          selectedVariant?.id === variant.id ? 'border-accent' : 'border-white/10 hover:border-white/30'
+                          selectedVariant?.id === variant.id ? 'border-accent-primary' : 'border-border-subtle hover:border-text-tertiary'
                         }`}
                         aria-label={`Select color ${variant.color}`}
                       >
                         <span
-                          className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center"
+                          className="w-8 h-8 rounded-full border border-border-subtle flex items-center justify-center"
                           style={{ backgroundColor: variant.colorHex }}
                         >
                           {selectedVariant?.id === variant.id && (
-                            <Check className={`w-4 h-4 ${variant.colorHex === '#FFFFFF' ? 'text-black' : 'text-white'}`} />
+                            <Check className={`w-4 h-4 ${variant.colorHex === '#FFFFFF' ? 'text-text-primary' : 'text-white'}`} />
                           )}
                         </span>
                       </button>
@@ -318,14 +328,14 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             </div>
 
             {/* Shipping & Stock indicator */}
-            <div className="space-y-3 p-4 bg-white/2 border border-white/5 rounded-2xl">
+            <div className="space-y-3 p-4 bg-bg-surface border border-border-subtle rounded-2xl shadow-sm">
               <div className="flex items-center gap-2 text-xs">
                 <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-                <span className="text-white font-semibold">In Stock</span>
+                <span className="text-text-primary font-semibold">In Stock</span>
                 <span className="text-text-secondary">&bull; Shipped from Monolith depot</span>
               </div>
               <div className="flex items-center gap-2 text-xs text-text-secondary">
-                <Truck className="w-3.5 h-3.5 text-accent" />
+                <Truck className="w-3.5 h-3.5 text-accent-primary" />
                 <span>{deliveryString}</span>
               </div>
             </div>
@@ -333,17 +343,17 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
             {/* CTA Buy Area */}
             <div ref={ctaRef} className="space-y-4 pt-4">
               <div className="flex gap-4">
-                <div className="flex items-center border border-white/10 rounded-xl bg-bg-primary overflow-hidden h-14">
+                <div className="flex items-center border border-border-subtle rounded-xl bg-bg-surface overflow-hidden h-14">
                   <button
                     onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                    className="p-3 px-4 text-text-secondary hover:text-white transition-colors"
+                    className="p-3 px-4 text-text-secondary hover:text-text-primary transition-colors"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="px-2 text-white font-mono text-sm w-8 text-center">{quantity}</span>
+                  <span className="px-2 text-text-primary font-mono text-sm w-8 text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity((q) => q + 1)}
-                    className="p-3 px-4 text-text-secondary hover:text-white transition-colors"
+                    className="p-3 px-4 text-text-secondary hover:text-text-primary transition-colors"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -351,7 +361,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-accent hover:bg-cyan-400 text-bg-primary font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-premium"
+                  className="flex-1 bg-accent-primary hover:bg-accent-primary/90 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-premium shadow-md"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   <span>Configure Armory</span>
@@ -361,12 +371,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
                   onClick={() => toggleWishlist(product.id)}
                   className={`p-4 border rounded-xl transition-premium ${
                     isWishlisted
-                      ? 'bg-accent/15 border-accent/30 text-accent'
-                      : 'bg-transparent border-white/10 hover:border-white/30 text-text-secondary hover:text-white'
+                      ? 'bg-accent-primary-soft border-accent-primary/30 text-accent-primary'
+                      : 'bg-bg-surface border-border-subtle hover:bg-bg-elevated hover:border-text-tertiary text-text-secondary hover:text-text-primary'
                   }`}
                   aria-label="Wishlist"
                 >
-                  <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-accent' : ''}`} />
+                  <Heart className={`w-5 h-5 ${isWishlisted ? 'fill-accent-primary' : ''}`} />
                 </button>
               </div>
             </div>
@@ -374,24 +384,24 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         </div>
 
         {/* Technical specs - Bento grids */}
-        <section className="py-12 border-t border-white/5 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section className="py-12 border-t border-border-subtle grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-1 space-y-3">
-            <h3 className="text-xs uppercase font-bold text-accent font-mono tracking-widest">
+            <h3 className="text-xs uppercase font-bold text-accent-primary font-mono tracking-widest">
               Technical Specifications
             </h3>
-            <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-white">
+            <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-text-primary">
               Raw Engineering Metrics
             </h2>
             <p className="text-xs text-text-secondary leading-relaxed">
               Milled exactly to physical constraints. We utilize structural carbon composites and N52 neodymium matrices to deliver verified specifications.
             </p>
           </div>
-          <div className="md:col-span-2 bg-surface-card border border-white/10 rounded-2xl overflow-hidden p-6">
+          <div className="md:col-span-2 bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden p-6 shadow-sm">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
               {Object.entries(specsObj).map(([key, val]: [string, any]) => (
-                <div key={key} className="flex justify-between py-3 border-b border-white/5 text-xs">
+                <div key={key} className="flex justify-between py-3 border-b border-border-subtle text-xs">
                   <span className="text-text-secondary font-mono uppercase tracking-wider">{key}</span>
-                  <span className="text-white font-medium">{val}</span>
+                  <span className="text-text-primary font-medium">{val}</span>
                 </div>
               ))}
             </div>
@@ -399,13 +409,13 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         </section>
 
         {/* Reviews Modules */}
-        <section className="py-12 border-t border-white/5 space-y-8">
+        <section className="py-12 border-t border-border-subtle space-y-8">
           <div className="flex justify-between items-end">
             <div className="space-y-2">
-              <h3 className="text-xs uppercase font-bold text-accent font-mono tracking-widest">
+              <h3 className="text-xs uppercase font-bold text-accent-primary font-mono tracking-widest">
                 Customer Feed
               </h3>
-              <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-white">
+              <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-text-primary">
                 Verified Verification Reviews
               </h2>
             </div>
@@ -417,16 +427,16 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               <p className="text-xs text-text-secondary italic">No reviews compiled for this accessory yet.</p>
             ) : (
               product.reviews.map((r) => (
-                <div key={r.id} className="bg-surface-card border border-white/10 rounded-2xl p-6 space-y-4">
+                <div key={r.id} className="bg-bg-surface border border-border-subtle rounded-2xl p-6 space-y-4 shadow-sm">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="font-semibold text-white">{r.userName}</span>
-                    <span className="bg-accent/15 text-accent text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono">
+                    <span className="font-semibold text-text-primary">{r.userName}</span>
+                    <span className="bg-accent-primary-soft text-accent-primary text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider font-mono">
                       Verified Buyer
                     </span>
                   </div>
-                  <div className="flex text-accent gap-0.5">
+                  <div className="flex text-accent-primary gap-0.5">
                     {[...Array(r.rating)].map((_, i) => (
-                      <Star key={i} className="w-3.5 h-3.5 fill-accent" />
+                      <Star key={i} className="w-3.5 h-3.5 fill-accent-primary" />
                     ))}
                   </div>
                   <p className="text-xs text-text-secondary leading-relaxed italic">
@@ -439,20 +449,20 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
         </section>
 
         {/* FAQs */}
-        <section className="py-12 border-t border-white/5 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <section className="py-12 border-t border-border-subtle grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-3">
-            <h3 className="text-xs uppercase font-bold text-accent font-mono tracking-widest">
+            <h3 className="text-xs uppercase font-bold text-accent-primary font-mono tracking-widest">
               Need Verification?
             </h3>
-            <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-white">
+            <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-text-primary">
               Tactile FAQ
             </h2>
           </div>
           <div className="md:col-span-2 space-y-6">
             {faqs.map((faq, i) => (
-              <div key={i} className="space-y-2 border-b border-white/5 pb-4">
-                <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-accent" />
+              <div key={i} className="space-y-2 border-b border-border-subtle pb-4">
+                <h4 className="text-sm font-semibold text-text-primary flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-accent-primary" />
                   {faq.q}
                 </h4>
                 <p className="text-xs text-text-secondary leading-relaxed pl-6">
@@ -465,8 +475,8 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (
-          <section className="py-12 border-t border-white/5 space-y-8">
-            <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-white text-center md:text-left">
+          <section className="py-12 border-t border-border-subtle space-y-8">
+            <h2 className="text-xl md:text-2xl font-bold font-display tracking-tight text-text-primary text-center md:text-left">
               Complete Your Loadout
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -480,9 +490,9 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
       {/* Sticky Bottom Buy-Bar */}
       {showStickyBar && (
-        <div className="fixed bottom-0 inset-x-0 z-30 bg-bg-secondary/95 backdrop-blur-md border-t border-white/10 py-3.5 px-6 animate-fade-in shadow-2xl flex items-center justify-between pb-safe-bottom">
+        <div className="fixed bottom-0 inset-x-0 z-30 bg-bg-surface/95 backdrop-blur-md border-t border-border-subtle py-3.5 px-6 animate-fade-in shadow-2xl flex items-center justify-between pb-safe-bottom">
           <div className="flex items-center gap-4 min-w-0 pr-4">
-            <div className="relative w-12 h-12 bg-surface-card border border-white/10 rounded-xl overflow-hidden flex-shrink-0 hidden sm:block">
+            <div className="relative w-12 h-12 bg-bg-surface border border-border-subtle rounded-xl overflow-hidden flex-shrink-0 hidden sm:block">
               <Image
                 src={product.image}
                 alt={product.name}
@@ -492,7 +502,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
               />
             </div>
             <div className="min-w-0">
-              <h4 className="text-sm font-bold text-white truncate leading-tight">{product.name}</h4>
+              <h4 className="text-sm font-bold text-text-primary truncate leading-tight">{product.name}</h4>
               <p className="text-[10px] text-text-secondary mt-0.5 truncate">
                 {selectedDevice} {selectedVariant ? ` / ${selectedVariant.color}` : ''}
               </p>
@@ -500,12 +510,12 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-base font-bold font-mono text-accent hidden sm:inline-block">
+            <span className="text-base font-bold font-mono text-accent-primary hidden sm:inline-block">
               ${currentPrice.toFixed(2)}
             </span>
             <button
               onClick={handleAddToCart}
-              className="bg-accent hover:bg-cyan-400 text-bg-primary font-bold px-6 py-3 rounded-xl text-xs flex items-center gap-1.5 transition-premium"
+              className="bg-accent-primary hover:bg-accent-primary/95 text-white font-bold px-6 py-3 rounded-xl text-xs flex items-center gap-1.5 transition-premium shadow-md"
             >
               <ShoppingBag className="w-3.5 h-3.5" />
               <span>Add to Loadout</span>

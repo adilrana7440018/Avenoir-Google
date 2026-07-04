@@ -13,12 +13,23 @@ interface PageProps {
   }>;
 }
 
+const categoryMap: Record<string, string> = {
+  cases: 'Phone Cases',
+  chargers: 'GaN Chargers',
+  cables: 'Braided Cables',
+  audio: 'AirPods Shells',
+  protectors: 'Screen Glass',
+  accessories: 'MagSafe Accessories',
+  all: 'All Hardware',
+};
+
 export async function generateMetadata({ params }: PageProps) {
   const resolvedParams = await params;
-  const categoryName = resolvedParams.category.charAt(0).toUpperCase() + resolvedParams.category.slice(1);
+  const category = resolvedParams.category;
+  const categoryName = categoryMap[category] || (category.charAt(0).toUpperCase() + category.slice(1));
   return {
     title: `${categoryName} Division`,
-    description: `Browse Avenoir's engineered ${resolvedParams.category} collection. Designed for impact.`,
+    description: `Browse Avenoir's engineered ${categoryName} collection. Designed for impact.`,
   };
 }
 
@@ -79,43 +90,42 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
   });
 
   const categories = [
-    { label: 'All Catalog', slug: 'all' },
-    { label: 'Cases', slug: 'cases' },
-    { label: 'Chargers', slug: 'chargers' },
-    { label: 'Cables', slug: 'cables' },
-    { label: 'AirPods protection', slug: 'audio' },
+    { label: 'All Hardware', slug: 'all' },
+    { label: 'Phone Cases', slug: 'cases' },
+    { label: 'GaN Chargers', slug: 'chargers' },
+    { label: 'Braided Cables', slug: 'cables' },
+    { label: 'AirPods Shells', slug: 'audio' },
     { label: 'Screen Glass', slug: 'protectors' },
-    { label: 'Accessories', slug: 'accessories' },
+    { label: 'MagSafe Accessories', slug: 'accessories' },
   ];
 
-  const currentCategoryLabel =
-    categories.find((c) => c.slug === category)?.label || 'Collection';
+  const currentCategoryLabel = categoryMap[category] || 'Collection';
 
   return (
-    <div className="min-h-screen mesh-bg py-10 md:py-16">
+    <div className="min-h-screen bg-bg-base py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-6 space-y-10">
         {/* Page title / breadcrumb */}
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-xs text-text-secondary font-mono">
-            <Link href="/" className="hover:text-accent transition-colors">HOME</Link>
+            <Link href="/" className="hover:text-accent-primary transition-colors">HOME</Link>
             <span>/</span>
-            <span className="text-white uppercase">{category}</span>
+            <span className="text-text-primary uppercase">{currentCategoryLabel}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white uppercase">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-text-primary uppercase">
             {currentCategoryLabel} Division
           </h1>
         </div>
 
         {/* Category strips / links */}
-        <div className="flex gap-2 pb-4 overflow-x-auto no-scrollbar border-b border-white/5">
+        <div className="flex gap-2 pb-4 overflow-x-auto no-scrollbar border-b border-border-subtle">
           {categories.map((c) => (
             <Link
               key={c.slug}
               href={`/products/${c.slug}`}
               className={`px-4 py-2 rounded-full border text-xs font-semibold whitespace-nowrap transition-premium ${
                 category === c.slug
-                  ? 'bg-accent text-bg-primary border-accent'
-                  : 'bg-white/2 border-white/5 text-text-secondary hover:text-white hover:border-white/10'
+                  ? 'bg-accent-primary text-white border-accent-primary'
+                  : 'bg-bg-surface border-border-subtle text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
               }`}
             >
               {c.label}
@@ -133,14 +143,14 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
           {/* Product Grid */}
           <main className="lg:col-span-9 space-y-8">
             {products.length === 0 ? (
-              <div className="border border-dashed border-white/10 rounded-2xl p-16 flex flex-col items-center justify-center text-center space-y-4">
-                <p className="text-white font-medium text-lg">No matching armory found</p>
+              <div className="border border-dashed border-border-subtle rounded-2xl p-16 flex flex-col items-center justify-center text-center space-y-4 bg-bg-surface">
+                <p className="text-text-primary font-medium text-lg">No matching armory found</p>
                 <p className="text-sm text-text-secondary max-w-sm">
                   We currently do not stock accessories matching those specific filter variables. Try resetting filters to browse alternative specifications.
                 </p>
                 <Link
                   href={`/products/${category}`}
-                  className="px-5 py-2.5 border border-white/10 hover:border-accent hover:text-accent rounded-xl text-xs font-bold transition-premium mt-2"
+                  className="px-5 py-2.5 border border-border-subtle hover:border-accent-primary hover:text-accent-primary rounded-xl text-xs font-bold transition-premium mt-2 text-text-primary bg-bg-surface hover:bg-bg-elevated"
                 >
                   Clear Current Filters
                 </Link>

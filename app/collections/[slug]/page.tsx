@@ -29,18 +29,18 @@ export default async function CollectionPage({ params }: PageProps) {
     .join(' ');
 
   return (
-    <div className="min-h-screen mesh-bg py-10 md:py-16">
+    <div className="min-h-screen bg-bg-base py-10 md:py-16">
       <div className="max-w-7xl mx-auto px-6 space-y-10">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-text-secondary font-mono">
-          <Link href="/" className="hover:text-accent transition-colors">HOME</Link>
+          <Link href="/" className="hover:text-accent-primary transition-colors">HOME</Link>
           <span>/</span>
-          <span className="text-white uppercase">COLLECTIONS</span>
+          <span className="text-text-primary uppercase">COLLECTIONS</span>
         </div>
 
         {/* Title */}
         <div className="space-y-2">
-          <h1 className="text-3xl font-extrabold font-display text-white uppercase tracking-tight">
+          <h1 className="text-3xl font-extrabold font-display text-text-primary uppercase tracking-tight">
             {collectionTitle} Collection
           </h1>
           <p className="text-xs text-text-secondary font-mono">

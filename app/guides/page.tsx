@@ -31,15 +31,15 @@ export default function GuidesPage() {
   ];
 
   return (
-    <div className="min-h-screen mesh-bg py-10 md:py-16">
+    <div className="min-h-screen bg-bg-base py-10 md:py-16">
       <div className="max-w-4xl mx-auto px-6 space-y-12">
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-xs text-text-secondary font-mono">
-            <Link href="/" className="hover:text-accent transition-colors">HOME</Link>
+            <Link href="/" className="hover:text-accent-primary transition-colors">HOME</Link>
             <span>/</span>
-            <span className="text-white uppercase">GUIDES</span>
+            <span className="text-text-primary uppercase">GUIDES</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-white uppercase">
+          <h1 className="text-3xl sm:text-4xl font-extrabold font-display tracking-tight text-text-primary uppercase">
             Avenoir Engineering Logs
           </h1>
           <p className="text-sm text-text-secondary">
@@ -52,13 +52,13 @@ export default function GuidesPage() {
             <Link
               key={g.slug}
               href={`/guides/${g.slug}`}
-              className="block bg-bg-secondary/40 border border-white/10 hover:border-accent/30 rounded-2xl p-6 transition-premium group"
+              className="block bg-bg-surface border border-border-subtle hover:border-accent-primary/30 rounded-2xl p-6 transition-premium group shadow-sm"
             >
               <div className="space-y-2">
-                <span className="text-[9px] uppercase font-bold text-accent font-mono tracking-widest bg-accent/10 px-2 py-0.5 rounded w-fit block">
+                <span className="text-[9px] uppercase font-bold text-accent-primary font-mono tracking-widest bg-accent-primary-soft px-2 py-0.5 rounded border border-accent-primary/10 w-fit block">
                   {g.category}
                 </span>
-                <h2 className="text-lg font-bold text-white group-hover:text-accent transition-colors">
+                <h2 className="text-lg font-bold text-text-primary group-hover:text-accent-primary transition-colors">
                   {g.title}
                 </h2>
                 <p className="text-xs text-text-secondary leading-relaxed">{g.desc}</p>

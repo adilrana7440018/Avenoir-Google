@@ -47,8 +47,8 @@ export default async function ProductDetailPage({ params }: PageProps) {
 
   if (!product) {
     return (
-      <div className="min-h-screen mesh-bg flex flex-col items-center justify-center text-center px-6 py-20">
-        <h1 className="text-3xl font-extrabold font-display text-white uppercase tracking-wider">
+      <div className="min-h-screen bg-bg-base flex flex-col items-center justify-center text-center px-6 py-20">
+        <h1 className="text-3xl font-extrabold font-display text-text-primary uppercase tracking-wider">
           Accessory Not Compiled
         </h1>
         <p className="text-sm text-text-secondary max-w-sm mt-3 leading-relaxed">
@@ -56,7 +56,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </p>
         <Link
           href="/products/cases"
-          className="mt-8 px-6 py-3 bg-accent hover:bg-cyan-400 text-bg-primary font-bold rounded-xl text-sm transition-premium"
+          className="mt-8 px-6 py-3 bg-accent-primary hover:bg-accent-primary/90 text-white font-bold rounded-xl text-sm transition-premium"
         >
           Return to Armory Catalog
         </Link>

@@ -116,13 +116,21 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
         <div className="space-y-1">
           <span className="text-[9px] uppercase font-bold text-text-tertiary font-mono tracking-widest block">
-            {product.category}
+            {product.category === 'cases' ? 'Phone Cases' :
+             product.category === 'chargers' ? 'GaN Chargers' :
+             product.category === 'cables' ? 'Braided Cables' :
+             product.category === 'audio' ? 'AirPods Shells' :
+             product.category === 'protectors' ? 'Screen Glass' :
+             product.category === 'accessories' ? 'MagSafe Accessories' : product.category}
           </span>
           <Link href={`/products/${product.category}/${product.slug}`} className="block">
             <h3 className="text-xs sm:text-sm font-bold text-text-primary group-hover:text-accent-primary transition-colors line-clamp-1 leading-tight">
               {product.name}
             </h3>
           </Link>
+          <div className="text-[9px] font-mono text-accent-secondary uppercase tracking-widest line-clamp-1">
+            Fits: {product.compatibility}
+          </div>
           <p className="text-[11px] sm:text-xs text-text-secondary line-clamp-2 min-h-8 hidden sm:block leading-relaxed">
             {product.description}
           </p>

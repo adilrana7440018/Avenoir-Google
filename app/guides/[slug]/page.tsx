@@ -65,40 +65,43 @@ export default async function GuideDetailPage({ params }: PageProps) {
   };
 
   return (
-    <div className="min-h-screen mesh-bg py-10 md:py-16">
+    <div className="min-h-screen bg-bg-base py-10 md:py-16">
       <div className="max-w-3xl mx-auto px-6 space-y-8">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs text-text-secondary font-mono">
-          <Link href="/" className="hover:text-accent transition-colors">HOME</Link>
+          <Link href="/" className="hover:text-accent-primary transition-colors">HOME</Link>
           <span>/</span>
-          <Link href="/guides" className="hover:text-accent transition-colors">GUIDES</Link>
+          <Link href="/guides" className="hover:text-accent-primary transition-colors">GUIDES</Link>
           <span>/</span>
-          <span className="text-white truncate max-w-[200px]">{article.title}</span>
+          <span className="text-text-primary truncate max-w-[200px]">{article.title}</span>
         </div>
 
-        {/* Header Details */}
-        <div className="space-y-4">
-          <span className="text-[9px] uppercase font-bold text-accent font-mono tracking-widest bg-accent/10 px-2.5 py-1 rounded w-fit block">
-            {article.category} Division
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-extrabold font-display leading-tight text-white">
-            {article.title}
-          </h1>
-          <p className="text-xs text-text-secondary font-mono">{article.readTime} &bull; Published by Avenoir Labs</p>
-        </div>
+        {/* Main Article Container */}
+        <div className="bg-bg-surface border border-border-subtle rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
+          {/* Header Details */}
+          <div className="space-y-4 pb-6 border-b border-border-subtle">
+            <span className="text-[9px] uppercase font-bold text-accent-primary font-mono tracking-widest bg-accent-primary-soft px-2.5 py-1 rounded border border-accent-primary/10 w-fit block">
+              {article.category} Division
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-extrabold font-display leading-tight text-text-primary">
+              {article.title}
+            </h1>
+            <p className="text-xs text-text-secondary font-mono">{article.readTime} &bull; Published by Avenoir Labs</p>
+          </div>
 
-        {/* Content paragraphs */}
-        <article className="space-y-6 pt-6 border-t border-white/10 text-sm text-text-secondary leading-relaxed">
-          {article.content.map((p, idx) => (
-            <p key={idx}>{p}</p>
-          ))}
-        </article>
+          {/* Content paragraphs */}
+          <article className="space-y-6 text-sm text-text-secondary leading-relaxed">
+            {article.content.map((p, idx) => (
+              <p key={idx}>{p}</p>
+            ))}
+          </article>
+        </div>
 
         {/* Return Button */}
-        <div className="pt-8 border-t border-white/5">
+        <div className="pt-8 border-t border-border-subtle">
           <Link
             href="/guides"
-            className="text-xs font-bold text-accent hover:underline flex items-center gap-1.5"
+            className="text-xs font-bold text-accent-primary hover:underline flex items-center gap-1.5"
           >
             &larr; Return to Engineering Logs
           </Link>

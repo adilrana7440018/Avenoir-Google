@@ -64,17 +64,17 @@ export default function FilterSidebar({ currentCategory }: FilterSidebarProps) {
   };
 
   return (
-    <div className="space-y-8 bg-bg-secondary/40 border border-white/10 rounded-2xl p-6 h-fit">
+    <div className="space-y-8 bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-sm h-fit">
       {/* Title */}
-      <div className="flex items-center justify-between border-b border-white/5 pb-4">
-        <div className="flex items-center gap-2 font-display font-semibold text-white">
-          <SlidersHorizontal className="w-4 h-4 text-accent" />
+      <div className="flex items-center justify-between border-b border-border-subtle pb-4">
+        <div className="flex items-center gap-2 font-display font-semibold text-text-primary">
+          <SlidersHorizontal className="w-4 h-4 text-accent-primary" />
           <span>Filters</span>
         </div>
         {(activeDevice || activePriceRange || activeColor || activeSort !== 'newest') && (
           <button
             onClick={handleClearFilters}
-            className="text-xs text-accent hover:underline flex items-center gap-1 font-medium"
+            className="text-xs text-accent-primary hover:underline flex items-center gap-1 font-medium"
           >
             <RefreshCw className="w-3 h-3" />
             Reset
@@ -94,12 +94,12 @@ export default function FilterSidebar({ currentCategory }: FilterSidebarProps) {
               onClick={() => updateQuery('sort', s.value)}
               className={`w-full text-left text-xs py-2 px-3 rounded-lg border transition-premium flex items-center justify-between ${
                 activeSort === s.value
-                  ? 'bg-accent/10 border-accent/30 text-accent font-semibold'
-                  : 'bg-white/2 border-white/5 text-text-secondary hover:text-white hover:border-white/10'
+                  ? 'bg-accent-primary-soft border-accent-primary/20 text-accent-primary font-semibold'
+                  : 'bg-bg-surface border-border-subtle text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
               }`}
             >
               <span>{s.label}</span>
-              {activeSort === s.value && <Check className="w-3.5 h-3.5 text-accent" />}
+              {activeSort === s.value && <Check className="w-3.5 h-3.5 text-accent-primary" />}
             </button>
           ))}
         </div>
@@ -117,12 +117,12 @@ export default function FilterSidebar({ currentCategory }: FilterSidebarProps) {
               onClick={() => updateQuery('device', d.value)}
               className={`w-full text-left text-xs py-2 px-3 rounded-lg border transition-premium flex items-center justify-between ${
                 activeDevice === d.value
-                  ? 'bg-accent/10 border-accent/30 text-accent font-semibold'
-                  : 'bg-transparent border-transparent text-text-secondary hover:text-white hover:bg-white/3'
+                  ? 'bg-accent-primary-soft border-accent-primary/20 text-accent-primary font-semibold'
+                  : 'bg-transparent border-transparent text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
               }`}
             >
               <span>{d.name}</span>
-              {activeDevice === d.value && <Check className="w-3.5 h-3.5 text-accent" />}
+              {activeDevice === d.value && <Check className="w-3.5 h-3.5 text-accent-primary" />}
             </button>
           ))}
         </div>
@@ -140,12 +140,12 @@ export default function FilterSidebar({ currentCategory }: FilterSidebarProps) {
               onClick={() => updateQuery('priceRange', r.value)}
               className={`w-full text-left text-xs py-2 px-3 rounded-lg border transition-premium flex items-center justify-between ${
                 activePriceRange === r.value
-                  ? 'bg-accent/10 border-accent/30 text-accent font-semibold'
-                  : 'bg-transparent border-transparent text-text-secondary hover:text-white hover:bg-white/3'
+                  ? 'bg-accent-primary-soft border-accent-primary/20 text-accent-primary font-semibold'
+                  : 'bg-transparent border-transparent text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
               }`}
             >
               <span>{r.label}</span>
-              {activePriceRange === r.value && <Check className="w-3.5 h-3.5 text-accent" />}
+              {activePriceRange === r.value && <Check className="w-3.5 h-3.5 text-accent-primary" />}
             </button>
           ))}
         </div>
@@ -163,13 +163,13 @@ export default function FilterSidebar({ currentCategory }: FilterSidebarProps) {
               onClick={() => updateQuery('color', c.value)}
               className={`px-3 py-1.5 rounded-full border text-xs font-semibold flex items-center gap-1.5 transition-premium ${
                 activeColor === c.value
-                  ? 'bg-accent/10 border-accent/40 text-accent'
-                  : 'bg-white/3 border-white/5 text-text-secondary hover:text-white hover:border-white/10'
+                  ? 'bg-accent-primary-soft border-accent-primary/30 text-accent-primary font-semibold'
+                  : 'bg-bg-surface border-border-subtle text-text-secondary hover:text-text-primary hover:bg-bg-elevated'
               }`}
             >
               {c.hex && (
                 <span
-                  className="w-2.5 h-2.5 rounded-full border border-white/10"
+                  className="w-2.5 h-2.5 rounded-full border border-border-subtle"
                   style={{ backgroundColor: c.hex }}
                 />
               )}
