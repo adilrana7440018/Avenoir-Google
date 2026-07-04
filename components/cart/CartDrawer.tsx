@@ -1,10 +1,11 @@
 'use client';
 
-import { useStore, CartItem } from '@/lib/store';
-import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, Lock, Tag } from 'lucide-react';
-import Link from 'next/link';
+import { useStore } from '@/lib/store';
+import { usePaddle } from './PaddleContext';
+import { X, ShoppingBag, Trash2, Plus, Minus, CreditCard, Gift, ShieldAlert } from 'lucide-react';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 export default function CartDrawer() {
   const {
@@ -18,267 +19,293 @@ export default function CartDrawer() {
     removeCoupon,
   } = useStore();
 
-  const [mounted, setMounted] = useState(false);
-  const [promoCode, setPromoCode] = useState('');
+  const { checkout } = usePaddle();
+  const [promoInput, setPromoInput] = useState('');
   const [promoError, setPromoError] = useState('');
 
-  // Hydration safety
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  const itemsCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+  const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  
-  // Free shipping threshold at $75
-  const shippingThreshold = 75;
-  const isFreeShipping = subtotal >= shippingThreshold;
-  const amountToFreeShipping = shippingThreshold - subtotal;
 
-  const discountAmount = coupon
-    ? coupon.discountType === 'PERCENT'
-      ? subtotal * (coupon.discountValue / 100)
-      : coupon.discountValue
-    : 0;
+  // Discount calculation
+  let discountAmount = 0;
+  if (coupon) {
+    if (coupon.discountType === 'PERCENT') {
+      discountAmount = (subtotal * coupon.discountValue) / 100;
+    } else {
+      discountAmount = coupon.discountValue;
+    }
+  }
 
   const finalTotal = Math.max(0, subtotal - discountAmount);
 
-  const handleApplyPromo = (e: React.FormEvent) => {
+  // Free shipping tracker ($100 threshold)
+  const shippingThreshold = 100;
+  const progressPercent = Math.min(100, (subtotal / shippingThreshold) * 100);
+  const remainingForFree = Math.max(0, shippingThreshold - subtotal);
+
+  const handlePromoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setPromoError('');
-    const code = promoCode.trim().toUpperCase();
-
-    if (code === 'AVENOIR10') {
-      applyCoupon({ code: 'AVENOIR10', discountType: 'PERCENT', discountValue: 10 });
-      setPromoCode('');
-    } else if (code === 'SECURE20') {
-      applyCoupon({ code: 'SECURE20', discountType: 'PERCENT', discountValue: 20 });
-      setPromoCode('');
-    } else if (code === 'MILL50') {
-      applyCoupon({ code: 'MILL50', discountType: 'FIXED', discountValue: 50 });
-      setPromoCode('');
+    if (promoInput.trim().toUpperCase() === 'AURA10') {
+      applyCoupon({
+        code: 'AURA10',
+        discountType: 'PERCENT',
+        discountValue: 10,
+      });
+      setPromoInput('');
+    } else if (promoInput.trim().toUpperCase() === 'FREE20') {
+      applyCoupon({
+        code: 'FREE20',
+        discountType: 'FIXED',
+        discountValue: 20,
+      });
+      setPromoInput('');
     } else {
-      setPromoError('Invalid coupon code');
+      setPromoError('Invalid coupon manifest code');
     }
   };
 
-  if (!isCartOpen) return null;
+  const handleCheckoutClick = () => {
+    setCartOpen(false);
+    checkout(cart, finalTotal);
+  };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop */}
-      <div
-        className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
-        onClick={() => setCartOpen(false)}
-      />
+    <AnimatePresence>
+      {isCartOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden font-sans">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setCartOpen(false)}
+            className="absolute inset-0 bg-text-primary/10 backdrop-blur-sm"
+          />
 
-      {/* Drawer */}
-      <div className="absolute inset-y-0 right-0 flex max-w-full pl-10 md:pl-0">
-        <div className="w-screen max-w-md transform bg-bg-secondary border-l border-white/10 transition-transform duration-300 ease-out flex flex-col h-full shadow-2xl">
-          {/* Header */}
-          <div className="px-6 py-5 border-b border-white/10 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5 text-accent" />
-              <h2 className="text-lg font-semibold font-display tracking-tight text-white">
-                Your Cart ({itemsCount})
-              </h2>
-            </div>
-            <button
-              onClick={() => setCartOpen(false)}
-              className="p-1 rounded-lg text-text-secondary hover:text-white hover:bg-white/5 transition-colors"
-              aria-label="Close cart"
+          {/* Drawer container */}
+          <div className="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
+              className="w-screen max-w-md bg-bg-surface border-l border-border-subtle flex flex-col shadow-md"
             >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Shipping Progress */}
-          {cart.length > 0 && (
-            <div className="px-6 py-4 bg-bg-primary/50 border-b border-white/10">
-              <div className="flex justify-between text-xs font-medium mb-2">
-                <span className="text-text-secondary">
-                  {isFreeShipping
-                    ? '🎉 You qualify for Free Express Shipping!'
-                    : `Spend $${amountToFreeShipping.toFixed(2)} more for Free Express Shipping`}
-                </span>
-                <span className="text-accent font-semibold">
-                  ${subtotal.toFixed(2)} / ${shippingThreshold}
-                </span>
-              </div>
-              <div className="w-full bg-white/10 h-1.5 rounded-full overflow-hidden">
-                <div
-                  className="bg-accent h-full transition-all duration-500 rounded-full"
-                  style={{ width: `${Math.min(100, (subtotal / shippingThreshold) * 100)}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Cart Items List */}
-          <div className="flex-1 overflow-y-auto py-6 px-6 space-y-6">
-            {cart.length === 0 ? (
-              <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-                <ShoppingBag className="w-12 h-12 text-white/20 animate-pulse" />
-                <div className="space-y-1">
-                  <p className="text-white font-medium">Your cart is empty</p>
-                  <p className="text-text-secondary text-sm">
-                    Architectural protection awaits your digital devices.
-                  </p>
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-border-subtle flex items-center justify-between">
+                <div className="flex items-center gap-2 text-text-primary font-bold">
+                  <ShoppingBag className="w-4.5 h-4.5 text-accent-primary" />
+                  <h2 className="text-sm font-bold uppercase tracking-wider">
+                    Locker Loadout
+                  </h2>
+                  <span className="text-xs bg-bg-elevated px-2 py-0.5 rounded-full font-mono text-text-secondary font-semibold">
+                    {cartCount}
+                  </span>
                 </div>
                 <button
                   onClick={() => setCartOpen(false)}
-                  className="inline-flex items-center justify-center px-6 py-3 border border-white/10 rounded-xl text-sm font-semibold hover:bg-white/5 hover:border-accent transition-premium mt-2"
+                  className="p-1.5 rounded-full hover:bg-bg-elevated text-text-secondary hover:text-text-primary transition-colors"
+                  aria-label="Close cart"
                 >
-                  Continue Shopping
+                  <X className="w-4.5 h-4.5" />
                 </button>
               </div>
-            ) : (
-              cart.map((item) => (
-                <div key={item.id} className="flex gap-4 pb-6 border-b border-white/5">
-                  <div className="relative w-20 h-20 bg-surface-card border border-white/10 rounded-xl overflow-hidden flex-shrink-0">
-                    <Image
-                      src={item.image}
-                      alt={item.name}
-                      fill
-                      className="object-cover"
-                      sizes="80px"
+
+              {/* Free Shipping Tracker */}
+              {cart.length > 0 && (
+                <div className="bg-bg-elevated/40 border-b border-border-subtle px-6 py-4.5 space-y-2">
+                  <div className="flex justify-between text-[11px] text-text-secondary">
+                    {remainingForFree > 0 ? (
+                      <span>
+                        Add <span className="font-mono text-accent-primary font-bold">${remainingForFree.toFixed(2)}</span> more for Free Shipping
+                      </span>
+                    ) : (
+                      <span className="text-accent-secondary font-bold">
+                        FREE SHIPPING UNLOCKED
+                      </span>
+                    )}
+                    <span>Goal: $100.00</span>
+                  </div>
+                  <div className="w-full bg-border-subtle h-1.5 rounded-full overflow-hidden">
+                    <div
+                      className={`h-full transition-all duration-500 rounded-full ${
+                        remainingForFree > 0 ? 'bg-accent-primary' : 'bg-accent-secondary'
+                      }`}
+                      style={{ width: `${progressPercent}%` }}
                     />
                   </div>
+                </div>
+              )}
 
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between text-sm font-medium">
-                        <h3 className="text-white line-clamp-1 pr-2">{item.name}</h3>
-                        <p className="text-white font-mono">${(item.price * item.quantity).toFixed(2)}</p>
-                      </div>
-                      <p className="text-xs text-text-secondary mt-1">
-                        {item.compatibility} {item.color ? ` / ${item.color}` : ''}
+              {/* Items List */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+                {cart.length === 0 ? (
+                  <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
+                    <div className="p-4 bg-bg-elevated rounded-full text-text-tertiary">
+                      <ShoppingBag className="w-8 h-8" />
+                    </div>
+                    <div className="space-y-1.5">
+                      <p className="text-text-primary font-bold text-sm">Bag empty</p>
+                      <p className="text-xs text-text-secondary max-w-[250px] mx-auto leading-relaxed">
+                        Add aramid covers or charging devices to compile your first order loadout.
                       </p>
                     </div>
-
-                    <div className="flex items-center justify-between text-sm mt-2">
-                      <div className="flex items-center border border-white/10 rounded-lg bg-bg-primary">
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="p-1 px-2.5 text-text-secondary hover:text-white transition-colors"
-                          aria-label="Decrease quantity"
-                        >
-                          <Minus className="w-3.5 h-3.5" />
-                        </button>
-                        <span className="px-2 text-white font-mono text-xs">{item.quantity}</span>
-                        <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="p-1 px-2.5 text-text-secondary hover:text-white transition-colors"
-                          aria-label="Increase quantity"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                        </button>
+                  </div>
+                ) : (
+                  cart.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex gap-4 p-3 bg-bg-base/30 border border-border-subtle rounded-2xl group transition-all"
+                    >
+                      {/* Image */}
+                      <div className="relative w-18 h-18 bg-bg-elevated border border-border-subtle rounded-xl overflow-hidden flex-shrink-0">
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
                       </div>
 
+                      {/* Detail metadata */}
+                      <div className="flex-1 flex flex-col justify-between min-w-0">
+                        <div className="space-y-0.5">
+                          <h4 className="text-xs font-bold text-text-primary truncate">
+                            {item.name}
+                          </h4>
+                          {item.compatibility && (
+                            <p className="text-[10px] text-text-tertiary uppercase font-mono tracking-wider">
+                              COMPATIBILITY: {item.compatibility}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="flex items-center justify-between mt-2">
+                          {/* Quantity selectors */}
+                          <div className="flex items-center border border-border-subtle rounded-lg bg-bg-surface overflow-hidden">
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              className="px-1.5 py-1 text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+                              aria-label="Decrease quantity"
+                            >
+                              <Minus className="w-3 h-3" />
+                            </button>
+                            <span className="px-2.5 text-[11px] font-mono font-bold text-text-primary">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              className="px-1.5 py-1 text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+                              aria-label="Increase quantity"
+                            >
+                              <Plus className="w-3 h-3" />
+                            </button>
+                          </div>
+
+                          {/* Price & Delete */}
+                          <div className="flex items-center gap-3">
+                            <span className="text-xs font-mono font-bold text-text-primary">
+                              ${(item.price * item.quantity).toFixed(2)}
+                            </span>
+                            <button
+                              onClick={() => removeItem(item.id)}
+                              className="text-text-tertiary hover:text-error transition-colors p-1"
+                              aria-label="Delete item"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Subtotal, Promo, & Checkout actions */}
+              {cart.length > 0 && (
+                <div className="border-t border-border-subtle p-6 bg-bg-surface space-y-4">
+                  {/* Coupon section */}
+                  {coupon ? (
+                    <div className="flex justify-between items-center bg-accent-primary-soft border border-accent-primary/20 text-accent-primary rounded-xl px-3 py-2 text-[11px] font-semibold">
+                      <div className="flex items-center gap-1.5">
+                        <Gift className="w-3.5 h-3.5" />
+                        <span>PROMO: {coupon.code} active (-${discountAmount.toFixed(2)})</span>
+                      </div>
                       <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-text-secondary hover:text-error p-1 rounded-lg hover:bg-white/5 transition-colors"
-                        aria-label="Remove item"
+                        onClick={removeCoupon}
+                        className="text-accent-primary hover:underline hover:text-indigo-800"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        Remove
                       </button>
                     </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
+                  ) : (
+                    <form onSubmit={handlePromoSubmit} className="space-y-1">
+                      <div className="flex border border-border-subtle rounded-xl bg-bg-base overflow-hidden focus-within:border-accent-primary">
+                        <input
+                          type="text"
+                          placeholder="PROMO CODE"
+                          value={promoInput}
+                          onChange={(e) => setPromoInput(e.target.value)}
+                          className="bg-transparent px-3 py-2 text-[10px] font-mono tracking-widest text-text-primary focus:outline-none w-full placeholder:text-text-tertiary"
+                        />
+                        <button
+                          type="submit"
+                          className="bg-bg-elevated hover:bg-text-primary hover:text-white px-4 text-[10px] font-semibold uppercase tracking-wider transition-colors border-l border-border-subtle"
+                        >
+                          Apply
+                        </button>
+                      </div>
+                      {promoError && (
+                        <p className="text-[10px] text-error font-medium pl-1 flex items-center gap-1">
+                          <ShieldAlert className="w-3 h-3" />
+                          <span>{promoError}</span>
+                        </p>
+                      )}
+                    </form>
+                  )}
 
-          {/* Footer - Summary and Checkout */}
-          {cart.length > 0 && (
-            <div className="border-t border-white/10 bg-bg-primary px-6 py-6 space-y-4">
-              {/* Promo code form */}
-              {!coupon ? (
-                <form onSubmit={handleApplyPromo} className="flex gap-2">
-                  <input
-                    type="text"
-                    placeholder="PROMO CODE"
-                    value={promoCode}
-                    onChange={(e) => {
-                      setPromoCode(e.target.value);
-                      setPromoError('');
-                    }}
-                    className="flex-1 bg-surface-card border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:border-accent font-mono placeholder:text-text-secondary/50 uppercase"
-                  />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 border border-white/10 rounded-xl text-sm font-semibold hover:border-accent hover:text-accent transition-colors"
-                  >
-                    Apply
-                  </button>
-                </form>
-              ) : (
-                <div className="flex justify-between items-center bg-accent/10 border border-accent/20 rounded-xl px-4 py-2.5 text-sm">
-                  <div className="flex items-center gap-2 text-accent">
-                    <Tag className="w-4 h-4" />
-                    <span className="font-mono font-bold">{coupon.code}</span>
-                    <span className="text-xs">
-                      (-{coupon.discountType === 'PERCENT' ? `${coupon.discountValue}%` : `$${coupon.discountValue}`})
-                    </span>
+                  {/* Pricing summaries */}
+                  <div className="space-y-2 text-xs">
+                    <div className="flex justify-between text-text-secondary">
+                      <span>Subtotal</span>
+                      <span className="font-mono">${subtotal.toFixed(2)}</span>
+                    </div>
+                    {coupon && (
+                      <div className="flex justify-between text-accent-primary">
+                        <span>Discount ({coupon.code})</span>
+                        <span className="font-mono">-${discountAmount.toFixed(2)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-text-secondary">
+                      <span>Shipping</span>
+                      <span className="font-mono">
+                        {subtotal >= shippingThreshold ? 'FREE' : '$9.99'}
+                      </span>
+                    </div>
+                    <div className="border-t border-border-subtle pt-3 flex justify-between font-bold text-text-primary text-sm">
+                      <span>Final Total</span>
+                      <span className="font-mono text-accent-primary">
+                        ${(finalTotal + (subtotal >= shippingThreshold ? 0 : 9.99)).toFixed(2)}
+                      </span>
+                    </div>
                   </div>
+
+                  {/* Pay button */}
                   <button
-                    onClick={removeCoupon}
-                    className="text-accent hover:text-white text-xs font-semibold"
+                    onClick={handleCheckoutClick}
+                    className="w-full bg-text-primary hover:bg-accent-primary text-white py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest transition-all shadow-sm flex items-center justify-center gap-2 mt-2"
                   >
-                    Remove
+                    <CreditCard className="w-4 h-4" />
+                    <span>Checkout via Paddle</span>
                   </button>
                 </div>
               )}
-              {promoError && <p className="text-xs text-error font-medium">{promoError}</p>}
-
-              {/* Pricing breakdown */}
-              <div className="space-y-1.5 text-sm">
-                <div className="flex justify-between text-text-secondary">
-                  <span>Subtotal</span>
-                  <span className="text-white font-mono">${subtotal.toFixed(2)}</span>
-                </div>
-                {coupon && (
-                  <div className="flex justify-between text-accent font-medium">
-                    <span>Discount</span>
-                    <span className="font-mono">-${discountAmount.toFixed(2)}</span>
-                  </div>
-                )}
-                <div className="flex justify-between text-text-secondary">
-                  <span>Shipping</span>
-                  <span className="text-white font-medium">
-                    {isFreeShipping ? 'FREE' : 'Calculated at checkout'}
-                  </span>
-                </div>
-                <div className="flex justify-between text-base font-bold text-white pt-2 border-t border-white/5">
-                  <span>Total</span>
-                  <span className="text-accent font-mono">${finalTotal.toFixed(2)}</span>
-                </div>
-              </div>
-
-              {/* Checkout buttons */}
-              <div className="pt-2">
-                <Link
-                  href="/checkout"
-                  onClick={() => setCartOpen(false)}
-                  className="w-full bg-accent hover:bg-cyan-400 text-bg-primary font-bold py-4 rounded-xl flex items-center justify-center gap-2 group transition-premium"
-                >
-                  <Lock className="w-4 h-4" />
-                  <span>Secure Checkout</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <button
-                  onClick={() => setCartOpen(false)}
-                  className="w-full text-center text-xs text-text-secondary hover:text-white pt-3 transition-colors"
-                >
-                  Or continue shopping
-                </button>
-              </div>
-            </div>
-          )}
+            </motion.div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 }

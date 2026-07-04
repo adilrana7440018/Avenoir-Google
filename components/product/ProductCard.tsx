@@ -1,10 +1,11 @@
 'use client';
 
 import { useStore } from '@/lib/store';
-import { Heart, ShoppingCart, Star, Shield } from 'lucide-react';
+import { Heart, ShoppingBag, Star, Shield } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 export interface ProductCardProps {
   product: {
@@ -35,14 +36,10 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   if (!mounted) {
     return (
-      <div className="bg-surface-card border border-white/10 rounded-2xl p-3 sm:p-4 space-y-3 sm:space-y-4 animate-pulse">
-        <div className="bg-white/5 aspect-square rounded-xl w-full" />
-        <div className="h-4 bg-white/5 rounded w-3/4" />
-        <div className="h-3 bg-white/5 rounded w-1/2" />
-        <div className="flex justify-between items-center pt-2">
-          <div className="h-4 bg-white/5 rounded w-1/4" />
-          <div className="h-8 bg-white/5 rounded-lg w-8" />
-        </div>
+      <div className="bg-bg-surface border border-border-subtle rounded-3xl p-3 sm:p-4 space-y-3 aspect-[4/5] animate-pulse">
+        <div className="bg-bg-elevated rounded-2xl w-full aspect-[4/5]" />
+        <div className="h-4 bg-bg-elevated rounded w-3/4" />
+        <div className="h-3 bg-bg-elevated rounded w-1/2" />
       </div>
     );
   }
@@ -64,103 +61,114 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div
-      className="group relative bg-surface-card border border-white/10 rounded-2xl overflow-hidden transition-premium hover:-translate-y-1.5 flex flex-col h-full hover:border-accent/40 hover:shadow-[0_8px_30px_rgb(34,211,238,0.08)]"
+    <motion.div
+      whileTap={{ scale: 0.96 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      className="group relative bg-bg-surface border border-border-subtle rounded-3xl overflow-hidden transition-all duration-300 flex flex-col h-full hover:shadow-md hover:border-accent-primary/20 cursor-pointer"
     >
-      {/* Badges and Wishlist */}
-      <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-10 flex flex-col gap-1 sm:gap-2">
+      {/* Badges */}
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
         {discountPercent > 0 && (
-          <span className="bg-error text-white text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full font-mono">
+          <span className="bg-error text-white text-[9px] font-bold px-2 py-0.5 rounded-full font-mono">
             -{discountPercent}%
           </span>
         )}
         {product.isFeatured && (
-          <span className="bg-accent/20 border border-accent/40 text-accent text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-full flex items-center gap-0.5 sm:gap-1 backdrop-blur-sm">
-            <Shield className="w-2 sm:w-2.5 sm:h-2.5 h-2" /> MONOLITH
+          <span className="bg-accent-primary-soft border border-accent-primary/20 text-accent-primary text-[8px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm">
+            <Shield className="w-2.5 h-2.5" /> Featured
           </span>
         )}
       </div>
 
+      {/* Wishlist Button */}
       <button
         onClick={(e) => {
           e.preventDefault();
           toggleWishlist(product.id);
         }}
-        className={`absolute top-2 right-2 sm:top-4 sm:right-4 z-10 p-1.5 sm:p-2 rounded-xl border transition-premium ${
+        className={`absolute top-3 right-3 z-10 p-2 rounded-2xl border transition-all duration-300 ${
           isWishlisted
-            ? 'bg-accent/10 border-accent/30 text-accent'
-            : 'bg-black/40 border-white/10 text-text-secondary hover:text-white hover:border-white/20 backdrop-blur-sm'
+            ? 'bg-accent-primary-soft border-accent-primary/30 text-accent-primary'
+            : 'bg-white/90 border-border-subtle text-text-secondary hover:text-text-primary hover:border-text-tertiary backdrop-blur-sm'
         }`}
         aria-label="Add to wishlist"
       >
-        <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWishlisted ? 'fill-accent' : ''}`} />
+        <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-accent-primary' : ''}`} />
       </button>
 
-      {/* Image Container */}
-      <Link href={`/products/${product.category}/${product.slug}`} className="block relative aspect-square bg-bg-primary/50 overflow-hidden">
+      {/* Image Container (Strict 4:5 Aspect Ratio) */}
+      <Link
+        href={`/products/${product.category}/${product.slug}`}
+        className="block relative w-full aspect-[4/5] bg-bg-elevated overflow-hidden border-b border-border-subtle"
+      >
         <Image
           src={isHovered && product.hoverImage ? product.hoverImage : product.image}
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-500 scale-100 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 scale-100 group-hover:scale-102"
           sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 250px"
           priority={product.isFeatured}
         />
       </Link>
 
-      {/* Details */}
-      <div className="p-3 sm:p-5 flex-1 flex flex-col justify-between">
-        <div className="space-y-0.5 sm:space-y-1">
-          <span className="text-[9px] sm:text-[10px] uppercase font-bold text-text-secondary font-mono tracking-wider">
+      {/* Details Section */}
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+        <div className="space-y-1">
+          <span className="text-[9px] uppercase font-bold text-text-tertiary font-mono tracking-widest block">
             {product.category}
           </span>
           <Link href={`/products/${product.category}/${product.slug}`} className="block">
-            <h3 className="text-xs sm:text-sm font-semibold text-white group-hover:text-accent transition-colors line-clamp-1">
+            <h3 className="text-xs sm:text-sm font-bold text-text-primary group-hover:text-accent-primary transition-colors line-clamp-1 leading-tight">
               {product.name}
             </h3>
           </Link>
-          <p className="text-[11px] sm:text-xs text-text-secondary line-clamp-2 min-h-8 hidden sm:block">
+          <p className="text-[11px] sm:text-xs text-text-secondary line-clamp-2 min-h-8 hidden sm:block leading-relaxed">
             {product.description}
           </p>
         </div>
 
-        <div className="pt-2 sm:pt-4 border-t border-white/5 mt-2 sm:mt-4 flex items-center justify-between">
+        <div className="pt-3 border-t border-border-subtle mt-3 flex items-center justify-between">
           <div>
-            <div className="flex items-center gap-1 sm:gap-1.5">
+            <div className="flex items-center gap-1.5">
               {product.discountPrice ? (
                 <>
-                  <span className="text-xs sm:text-sm font-bold text-accent font-mono">
+                  <span className="text-xs sm:text-sm font-bold text-accent-primary font-mono">
                     ${product.discountPrice.toFixed(2)}
                   </span>
-                  <span className="text-[10px] sm:text-xs text-text-secondary line-through font-mono">
+                  <span className="text-[10px] sm:text-xs text-text-tertiary line-through font-mono">
                     ${product.price.toFixed(2)}
                   </span>
                 </>
               ) : (
-                <span className="text-xs sm:text-sm font-bold text-white font-mono">
+                <span className="text-xs sm:text-sm font-bold text-text-primary font-mono">
                   ${product.price.toFixed(2)}
                 </span>
               )}
             </div>
             {/* Rating */}
-            <div className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-[9px] sm:text-[10px] text-text-secondary">
-              <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-accent fill-accent" />
-              <span className="font-semibold text-white font-mono">{product.rating}</span>
-              <span>({product.reviewsCount})</span>
+            <div className="flex items-center gap-1 mt-0.5 text-[9px] sm:text-[10px] text-text-secondary">
+              <Star className="w-2.5 h-2.5 text-accent-warm fill-accent-warm" />
+              <span className="font-semibold text-text-primary font-mono">{product.rating}</span>
+              <span className="text-text-tertiary">({product.reviewsCount})</span>
             </div>
           </div>
 
+          {/* Quick Add Button */}
           <button
             onClick={handleAddToCart}
-            className="p-2 sm:p-3 bg-white/5 hover:bg-accent hover:text-bg-primary border border-white/10 hover:border-accent rounded-xl transition-premium group/btn"
-            aria-label="Add to cart"
+            className="p-2 sm:p-2.5 bg-bg-elevated hover:bg-accent-primary text-text-primary hover:text-white border border-border-subtle hover:border-accent-primary rounded-xl transition-all duration-300"
+            aria-label="Add to bag"
           >
-            <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover/btn:scale-110 transition-transform" />
+            <ShoppingCartWrapper />
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
+}
+
+// Small helper inside card
+function ShoppingCartWrapper() {
+  return <ShoppingBag className="w-3.5 h-3.5" />;
 }
