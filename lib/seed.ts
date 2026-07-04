@@ -221,7 +221,7 @@ async function main() {
       compatibility: 'iPhone 16 / 15 / 14 Series with MagSafe, MagSafe Cases',
     },
     {
-      name: 'Aeris Clear-Armor Glass Shell',
+      name: 'Avenoir Clear-Armor Glass Shell',
       slug: 'clear-armor-glass-shell',
       description: 'Ultra-clear hybrid case with dual-layer shock dispersion bumpers and crystal clarity.',
       details: 'Featuring scratch-resistant tempered glass back plate and soft TPU border panels. Fully compatible with MagSafe wireless pads.',
@@ -241,7 +241,7 @@ async function main() {
       compatibility: 'iPhone 16 Pro, iPhone 16 Pro Max, Galaxy S25 Ultra',
     },
     {
-      name: 'Aeris Neo GaN 100W Charging Hub',
+      name: 'Avenoir Neo GaN 100W Charging Hub',
       slug: 'neo-gan-100w-charging-hub',
       description: 'High-performance desktop charging station with 3x USB-C and 1x USB-A ports to charge your full work loadout.',
       details: 'Exposes smart power sharing protocols, delivering up to 100W single-port outputs. Encased in a flame-retardant stone-finish shell.',
@@ -261,7 +261,7 @@ async function main() {
       compatibility: 'MacBook Pro, iPhone 16, iPad, USB-C Laptops',
     },
     {
-      name: 'Aeris Helix Braided L-Cable (1.2m)',
+      name: 'Avenoir Helix Braided L-Cable (1.2m)',
       slug: 'helix-braided-l-cable',
       description: 'Right-angle USB-C connector with ballistic double-braided nylon sleeve. Ideal for handheld gaming and tight desk spaces.',
       details: 'Built with reinforced copper core wires supporting up to 60W power transmission. Right-angle plug reduces strain on USB ports.',
@@ -281,7 +281,7 @@ async function main() {
       compatibility: 'All USB-C Devices, iPad, Nintendo Switch',
     },
     {
-      name: 'Aeris Pod Aramid Loop for AirPods 4',
+      name: 'Avenoir Pod Aramid Loop for AirPods 4',
       slug: 'pod-aramid-loop-airpods-4',
       description: 'Featherlight aramid fiber cover tailored for AirPods 4. Built-in lanyard anchor and charging indicator cutouts.',
       details: 'Exposes a slim 0.6mm aramid weave with tactile anti-slip surface coatings. Compatible with MagSafe wireless pads.',
@@ -301,7 +301,7 @@ async function main() {
       compatibility: 'AirPods 4, AirPods 4 Active Noise Cancellation',
     },
     {
-      name: 'Aeris Screen Glass Protectors (2-Pack)',
+      name: 'Avenoir Screen Glass Protectors (2-Pack)',
       slug: 'screen-glass-protectors-2pack',
       description: 'Premium double-strength glass protectors with anti-shatter matrices. Micro-bevel borders for smooth swipes.',
       details: 'Aluminosilicate glass exchange formula delivers impact resistance. Features bubble-free adhesive maps for clean static installations.',
@@ -320,7 +320,7 @@ async function main() {
       compatibility: 'iPhone 16 Pro, Galaxy S25 Ultra, Pixel 9 Pro',
     },
     {
-      name: 'Aeris Magnetic Desk Orb Stand',
+      name: 'Avenoir Magnetic Desk Orb Stand',
       slug: 'magnetic-desk-orb-stand',
       description: 'Sculpted alloy phone stand with a 360-degree articulating ball-head. Heavy base for steady one-handed taps.',
       details: 'Solid zinc alloy casing with non-slip silicone pads. Double magnetic ring core guarantees solid grip locks.',

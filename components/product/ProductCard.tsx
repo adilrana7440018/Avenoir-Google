@@ -3,6 +3,7 @@
 import { useStore } from '@/lib/store';
 import { Heart, ShoppingBag, Star, Shield } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -49,8 +50,19 @@ export default function ProductCard({ product }: ProductCardProps) {
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
     : 0;
 
+  const router = useRouter();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('button') || target.closest('a')) {
+      return;
+    }
+    router.push(`/products/${product.category}/${product.slug}`);
+  };
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     addItem({
       productId: product.id,
       name: product.name,
@@ -65,6 +77,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       whileTap={{ scale: 0.96 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleCardClick}
       className="group relative bg-bg-surface border border-border-subtle rounded-3xl overflow-hidden transition-all duration-300 flex flex-col h-full hover:shadow-md hover:border-accent-primary/20 cursor-pointer"
     >
       {/* Badges */}
@@ -85,6 +98,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <button
         onClick={(e) => {
           e.preventDefault();
+          e.stopPropagation();
           toggleWishlist(product.id);
         }}
         className={`absolute top-3 right-3 z-10 p-2 rounded-2xl border transition-all duration-300 ${

@@ -25,6 +25,7 @@ export default function CheckoutPage() {
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
   const [cvc, setCvc] = useState('');
+  const [country, setCountry] = useState('United States');
 
   useEffect(() => {
     setMounted(true);
@@ -53,7 +54,7 @@ export default function CheckoutPage() {
       city,
       state,
       postalCode: zip,
-      country: 'USA',
+      country,
     };
 
     const itemsInput = cart.map((item) => ({
@@ -299,6 +300,21 @@ export default function CheckoutPage() {
                       placeholder="90210"
                     />
                   </div>
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] uppercase font-bold text-text-secondary tracking-wider font-mono">
+                    Country
+                  </label>
+                  <select
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="w-full bg-bg-elevated border border-border-subtle rounded-xl px-4 py-3 text-sm text-text-primary focus:outline-none focus:border-accent-primary transition-premium cursor-pointer"
+                  >
+                    <option value="United States">United States</option>
+                    <option value="Canada">Canada</option>
+                    <option value="Mexico">Mexico</option>
+                  </select>
                 </div>
               </div>
             </div>

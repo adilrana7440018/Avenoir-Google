@@ -51,7 +51,7 @@ export default function Navbar() {
             href="/"
             className="text-lg font-black tracking-widest text-text-primary hover:text-accent-primary transition-colors flex items-center gap-1.5"
           >
-            AERIS
+            AVENOIR
             <span className="w-1.5 h-1.5 bg-accent-primary rounded-full animate-pulse" />
           </Link>
 

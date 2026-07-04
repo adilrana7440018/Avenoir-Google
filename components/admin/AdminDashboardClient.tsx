@@ -111,7 +111,7 @@ export default function AdminDashboardClient({
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-xs text-accent-primary font-mono tracking-widest uppercase">
               <Sparkles className="w-4 h-4 animate-spin-slow" />
-              <span>AERIS SECURE INTERFACE</span>
+              <span>AVENOIR SECURE INTERFACE</span>
             </div>
             <h1 className="text-2xl font-black text-text-primary uppercase tracking-tight">
               Operational Command

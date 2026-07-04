@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Operational Console',
-  description: 'AERIS high-density logistics and analytics dashboard.',
+  description: 'AVENOIR high-density logistics and analytics dashboard.',
 };
 
 export default async function AdminDashboardPage() {

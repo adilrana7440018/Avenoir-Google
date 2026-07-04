@@ -24,7 +24,7 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error in Aeris engine:', error, errorInfo);
+    console.error('Uncaught error in Avenoir engine:', error, errorInfo);
   }
 
   private handleReset = () => {
@@ -50,7 +50,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                 System Isolation Active
               </h1>
               <p className="text-sm text-text-secondary leading-relaxed">
-                The Aeris rendering engine has successfully isolated an interface fault and prevented a full application crash.
+                The Avenoir rendering engine has successfully isolated an interface fault and prevented a full application crash.
               </p>
               {this.state.error && (
                 <pre className="text-[10px] text-left p-3 bg-bg-elevated border border-border-subtle rounded-lg text-text-secondary font-mono overflow-auto max-h-32">

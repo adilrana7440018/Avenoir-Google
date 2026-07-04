@@ -64,7 +64,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom premium scrollbar for Aeris */
+/* Custom premium scrollbar for Avenoir */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -89,8 +89,8 @@ body {
   background: radial-gradient(circle, rgba(20, 184, 166, 0.06) 0%, transparent 60%);
 }
 
-/* Glassmorphism components for Aeris */
-.aeris-glass {
+/* Glassmorphism components for Avenoir */
+.avenoir-glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);

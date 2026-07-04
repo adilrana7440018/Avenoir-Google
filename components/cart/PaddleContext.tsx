@@ -131,7 +131,7 @@ export function PaddleProvider({ children }: PaddleProviderProps) {
                       <span>PADDLE SECURE GATEWAY</span>
                     </div>
                     <h3 className="text-base font-bold text-text-primary">
-                      AERIS Order Loadout
+                      AVENOIR Order Loadout
                     </h3>
                     <p className="text-[11px] text-text-secondary">
                       Your checkout session is encrypted and processed via Paddle.

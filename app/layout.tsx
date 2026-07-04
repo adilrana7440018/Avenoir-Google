@@ -18,12 +18,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | AERIS',
-    default: 'AERIS | Premium Soft Aura Storefront',
+    template: '%s | AVENOIR',
+    default: 'AVENOIR | Premium Soft Aura Storefront',
   },
   description:
     'A high-performance light-themed e-commerce platform built with Next.js 16, React 19, and Tailwind CSS v4.',
-  keywords: ['aeris', 'e-commerce', 'premium tech', 'light theme', 'soft design'],
+  keywords: ['avenoir', 'e-commerce', 'premium tech', 'light theme', 'soft design'],
 };
 
 export default function RootLayout({
