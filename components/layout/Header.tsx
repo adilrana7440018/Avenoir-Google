@@ -1,24 +1,15 @@
 'use client';
 
 import { useStore } from '@/lib/store';
-import { Search, ShoppingBag, User, Menu, X, Heart } from 'lucide-react';
+import { Search, ShoppingBag, User, Heart, Menu, X, Cpu } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const { cart, wishlist, setCartOpen, setSearchOpen } = useStore();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -29,95 +20,108 @@ export default function Header() {
   const wishlistCount = wishlist.length;
 
   const navLinks = [
-    { name: 'Cases', href: '/products/cases' },
-    { name: 'Chargers', href: '/products/chargers' },
-    { name: 'Cables', href: '/products/cables' },
-    { name: 'AirPods protection', href: '/products/audio' },
-    { name: 'Screen Protectors', href: '/products/protectors' },
-    { name: 'Accessories', href: '/products/accessories' },
+    { name: 'CASES', href: '/products/cases' },
+    { name: 'CHARGERS', href: '/products/chargers' },
+    { name: 'CABLES', href: '/products/cables' },
+    { name: 'AUDIO', href: '/products/audio' },
+    { name: 'GLASS', href: '/products/protectors' },
+    { name: 'MODULAR', href: '/products/accessories' },
   ];
 
   return (
     <>
-      <header
-        className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? 'bg-bg-primary/80 backdrop-blur-md border-b border-white/10 py-3 shadow-lg'
-            : 'bg-transparent py-5'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="text-xl font-bold font-display tracking-widest text-white hover:text-accent transition-colors flex items-center gap-1.5"
-          >
-            AVENOIR<span className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse-glow" />
-          </Link>
+      {/* Top Technical Status Ticker */}
+      <div className="bg-bg-primary border-b border-white/5 py-1 px-6 flex justify-between items-center text-[9px] font-mono tracking-widest text-text-secondary">
+        <div className="flex items-center gap-2">
+          <Cpu className="w-3 h-3 text-accent animate-pulse-glow" />
+          <span>AVN_SYS // CORE ACTIVE [v16.2.10]</span>
+        </div>
+        <div className="hidden md:flex items-center gap-6">
+          <span>LATENCY // 12MS</span>
+          <span>CURRENCY // USD</span>
+          <span>LOC // C:\\AVENOIR_LABS\\STORE</span>
+        </div>
+        <div>
+          <span>SECURE PROTOCOLS // ONLINE</span>
+        </div>
+      </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-8">
+      <header className="sticky top-0 z-40 bg-bg-primary/90 backdrop-blur-md border-b border-white/10">
+        <div className="max-w-7xl mx-auto flex items-stretch h-14">
+          {/* Logo block */}
+          <div className="px-6 flex items-center border-r border-white/10 flex-shrink-0">
+            <Link
+              href="/"
+              className="text-sm font-black font-mono tracking-tighter text-white hover:text-accent transition-colors flex items-center gap-1.5"
+            >
+              [AVENOIR // SPEC.01]
+            </Link>
+          </div>
+
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-stretch flex-1">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className="text-sm font-medium text-text-secondary hover:text-white hover:underline decoration-accent decoration-2 underline-offset-4 transition-colors"
+                className="flex items-center px-5 text-[11px] font-bold font-mono tracking-widest text-text-secondary hover:text-white border-r border-white/10 hover:bg-white/3 transition-premium relative group"
               >
-                {link.name}
+                <span>{link.name}</span>
+                {/* Thin cyan bar on hover */}
+                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-200" />
               </Link>
             ))}
           </nav>
 
-          {/* Action Items */}
-          <div className="flex items-center gap-3 md:gap-5">
+          {/* Action Blocks */}
+          <div className="flex items-stretch ml-auto">
             {/* Search */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-2 rounded-xl text-text-secondary hover:text-white hover:bg-white/5 transition-colors"
+              className="px-4 flex items-center justify-center text-text-secondary hover:text-white border-l border-white/10 hover:bg-white/3 transition-colors"
               aria-label="Search"
             >
-              <Search className="w-5 h-5" />
+              <Search className="w-4 h-4" />
             </button>
 
             {/* Wishlist */}
             <Link
               href="/account?tab=wishlist"
-              className="p-2 rounded-xl text-text-secondary hover:text-white hover:bg-white/5 transition-colors relative hidden sm:inline-flex"
+              className="px-4 flex items-center justify-center text-text-secondary hover:text-white border-l border-white/10 hover:bg-white/3 transition-colors relative hidden sm:flex"
               aria-label="Wishlist"
             >
-              <Heart className="w-5 h-5" />
+              <Heart className="w-4 h-4" />
               {wishlistCount > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-accent rounded-full" />
+                <span className="absolute top-3.5 right-3.5 w-1.5 h-1.5 bg-accent rounded-full animate-pulse-glow" />
               )}
             </Link>
 
             {/* Account */}
             <Link
               href="/account"
-              className="p-2 rounded-xl text-text-secondary hover:text-white hover:bg-white/5 transition-colors"
+              className="px-4 flex items-center justify-center text-text-secondary hover:text-white border-l border-white/10 hover:bg-white/3 transition-colors"
               aria-label="Account"
             >
-              <User className="w-5 h-5" />
+              <User className="w-4 h-4" />
             </Link>
 
-            {/* Cart */}
+            {/* Cart Box */}
             <button
               onClick={() => setCartOpen(true)}
-              className="p-2 rounded-xl text-text-secondary hover:text-white hover:bg-white/5 transition-colors relative"
+              className="px-6 flex items-center gap-2 text-text-secondary hover:text-white border-l border-white/10 hover:bg-accent hover:text-bg-primary transition-premium font-mono font-bold text-[11px] tracking-widest relative"
               aria-label="Cart"
             >
-              <ShoppingBag className="w-5 h-5" />
-              {cartCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 min-w-5 h-5 bg-accent text-bg-primary font-bold text-xs flex items-center justify-center rounded-full px-1.5 shadow-md">
-                  {cartCount}
-                </span>
-              )}
+              <ShoppingBag className="w-4 h-4" />
+              <span className="hidden sm:inline">LOADOUT</span>
+              <span className="bg-white/10 px-2 py-0.5 rounded text-[10px] text-white">
+                {cartCount}
+              </span>
             </button>
 
-            {/* Mobile menu trigger */}
+            {/* Mobile burger */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl text-text-secondary hover:text-white hover:bg-white/5 transition-colors lg:hidden"
+              className="px-4 flex items-center justify-center text-text-secondary hover:text-white border-l border-white/10 hover:bg-white/3 transition-colors lg:hidden"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -127,38 +131,37 @@ export default function Header() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 w-full bg-bg-secondary border-b border-white/10 px-6 py-6 space-y-4 shadow-2xl animate-fade-in">
-            <div className="flex flex-col space-y-3">
+          <div className="lg:hidden absolute top-full left-0 w-full bg-bg-primary border-b border-white/10 px-6 py-6 space-y-4 shadow-2xl animate-fade-in font-mono text-xs">
+            <div className="flex flex-col space-y-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-base font-semibold py-2.5 border-b border-white/5 text-white hover:text-accent transition-colors"
+                  className="py-3 border-b border-white/5 text-white hover:text-accent transition-colors flex items-center justify-between tracking-widest font-bold"
                 >
-                  {link.name}
+                  <span>{link.name}</span>
+                  <span className="text-[10px] text-text-secondary opacity-50">&rarr;</span>
                 </Link>
               ))}
               <Link
                 href="/account?tab=wishlist"
-                className="text-base font-semibold py-2.5 border-b border-white/5 text-white hover:text-accent transition-colors flex items-center justify-between"
+                className="py-3 border-b border-white/5 text-white hover:text-accent transition-colors flex items-center justify-between tracking-widest font-bold"
               >
-                <span>Wishlist</span>
-                <span className="bg-white/10 text-xs px-2.5 py-1 rounded-full font-mono text-white">
+                <span>WISHLIST LOCKER</span>
+                <span className="bg-white/10 text-[9px] px-2 py-0.5 rounded text-white font-mono">
                   {wishlistCount}
                 </span>
               </Link>
               <Link
                 href="/admin"
-                className="text-base font-semibold py-2.5 text-accent hover:underline decoration-accent underline-offset-4 transition-colors"
+                className="py-3 text-accent hover:text-white transition-colors tracking-widest font-bold"
               >
-                Operator Admin Console →
+                SYSTEM CONSOLE &rarr;
               </Link>
             </div>
           </div>
         )}
       </header>
-      {/* Spacer to avoid layout overlap */}
-      <div className="h-16 w-full" />
     </>
   );
 }
