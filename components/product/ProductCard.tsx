@@ -28,6 +28,7 @@ export interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addItem, wishlist, toggleWishlist } = useStore();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -49,8 +50,6 @@ export default function ProductCard({ product }: ProductCardProps) {
   const discountPercent = product.discountPrice
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
     : 0;
-
-  const router = useRouter();
 
   const handleCardClick = (e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
