@@ -64,7 +64,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [mounted, setMounted] = useState(false);
   
   // Gallery state
-  const imageList = JSON.parse(product.images || '[]');
+  let imageList: string[] = [];
+  try {
+    imageList = JSON.parse(product.images || '[]');
+    if (!Array.isArray(imageList)) {
+      imageList = [];
+    }
+  } catch (e) {
+    console.error('Failed to parse product.images:', e);
+  }
   const allImages = [product.image, ...imageList].filter(Boolean);
   const [activeImage, setActiveImage] = useState(allImages[0] || product.image);
   
@@ -72,10 +80,10 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   const [zoomStyle, setZoomStyle] = useState({ display: 'none', backgroundPosition: '0% 0%' });
 
   // Selected Options
-  const compatOptions = product.compatibility.split(',').map((c) => c.trim());
+  const compatOptions = (product.compatibility || '').split(',').map((c) => c.trim()).filter(Boolean);
   const [selectedDevice, setSelectedDevice] = useState(compatOptions[0] || '');
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
-    product.variants[0] || null
+    (product.variants && product.variants[0]) || null
   );
   const [quantity, setQuantity] = useState(1);
 
@@ -99,7 +107,7 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
 
   if (!mounted) return null;
 
-  const isWishlisted = wishlist.includes(product.id);
+  const isWishlisted = wishlist && Array.isArray(wishlist) && wishlist.includes(product.id);
   const basePrice = product.discountPrice || product.price;
   const priceModifier = selectedVariant ? selectedVariant.priceModifier : 0;
   const currentPrice = basePrice + priceModifier;
@@ -128,7 +136,15 @@ export default function ProductDetailClient({ product, relatedProducts }: Produc
   })} - ${deliveryEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} (Express)`;
 
   // Spec list parsing
-  const specsObj = JSON.parse(product.specs || '{}');
+  let specsObj: Record<string, string> = {};
+  try {
+    specsObj = JSON.parse(product.specs || '{}');
+    if (typeof specsObj !== 'object' || specsObj === null) {
+      specsObj = {};
+    }
+  } catch (e) {
+    console.error('Failed to parse product.specs:', e);
+  }
 
   const faqs = [
     {

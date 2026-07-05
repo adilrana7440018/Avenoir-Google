@@ -46,7 +46,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     );
   }
 
-  const isWishlisted = wishlist.includes(product.id);
+  const isWishlisted = wishlist && Array.isArray(wishlist) && wishlist.includes(product.id);
   const discountPercent = product.discountPrice
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100)
     : 0;
