@@ -52,7 +52,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           Product Not Found
         </h1>
         <p className="text-sm text-text-secondary max-w-sm mt-3 leading-relaxed">
-          We can't seem to find the product you're looking for. It may have been moved or is currently out of stock.
+          We can&apos;t seem to find the product you&apos;re looking for. It may have been moved or is currently out of stock.
         </p>
         <Link
           href="/products/all"

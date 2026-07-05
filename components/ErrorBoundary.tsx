@@ -50,7 +50,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                 An unexpected error occurred
               </h1>
               <p className="text-sm text-text-secondary leading-relaxed">
-                We're sorry for the inconvenience. Please try reloading the page to continue shopping.
+                We&apos;re sorry for the inconvenience. Please try reloading the page to continue shopping.
               </p>
             </div>
 
