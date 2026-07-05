@@ -2,6 +2,7 @@ import db from '@/lib/db';
 import ProductCard from '@/components/product/ProductCard';
 import FilterSidebar from '@/components/product/FilterSidebar';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 interface PageProps {
   params: Promise<{ category: string }>;
@@ -137,7 +138,20 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Sidebar */}
           <aside className="lg:col-span-3">
-            <FilterSidebar currentCategory={category} />
+            <Suspense fallback={
+              <div className="space-y-8 bg-bg-surface border border-border-subtle rounded-2xl p-6 shadow-sm h-72 animate-pulse flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="h-5 bg-bg-elevated rounded w-1/3" />
+                  <div className="h-4 bg-bg-elevated rounded w-3/4" />
+                </div>
+                <div className="space-y-2">
+                  <div className="h-8 bg-bg-elevated rounded w-full" />
+                  <div className="h-8 bg-bg-elevated rounded w-full" />
+                </div>
+              </div>
+            }>
+              <FilterSidebar currentCategory={category} />
+            </Suspense>
           </aside>
 
           {/* Product Grid */}

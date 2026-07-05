@@ -49,16 +49,16 @@ export default async function ProductDetailPage({ params }: PageProps) {
     return (
       <div className="min-h-screen bg-bg-base flex flex-col items-center justify-center text-center px-6 py-20">
         <h1 className="text-3xl font-extrabold font-display text-text-primary uppercase tracking-wider">
-          Accessory Not Compiled
+          Product Not Found
         </h1>
         <p className="text-sm text-text-secondary max-w-sm mt-3 leading-relaxed">
-          The accessory slug requested does not map to any physical carbon composite or fast GaN components in our current manifest.
+          We can't seem to find the product you're looking for. It may have been moved or is currently out of stock.
         </p>
         <Link
-          href="/products/cases"
+          href="/products/all"
           className="mt-8 px-6 py-3 bg-accent-primary hover:bg-accent-primary/90 text-white font-bold rounded-xl text-sm transition-premium"
         >
-          Return to Armory Catalog
+          Return to Shop
         </Link>
       </div>
     );

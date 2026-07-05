@@ -159,13 +159,13 @@ export default function CheckoutPage() {
           Checkout Empty
         </h1>
         <p className="text-sm text-text-secondary max-w-sm mt-3">
-          Your active shopping cart has no queued elements. Please select items from the catalog before proceeding to authorization.
+          Your shopping cart is currently empty. Please select products from our catalog before proceeding to checkout.
         </p>
         <Link
-          href="/products/cases"
+          href="/products/all"
           className="mt-8 px-6 py-3 bg-accent-primary hover:bg-accent-primary/90 text-white font-bold rounded-xl text-sm transition-premium shadow-md"
         >
-          Return to Armory Catalog
+          Return to Shop
         </Link>
       </div>
     );

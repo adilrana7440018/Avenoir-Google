@@ -47,16 +47,11 @@ export default class ErrorBoundary extends Component<Props, State> {
 
             <div className="space-y-2">
               <h1 className="text-xl font-bold text-text-primary tracking-tight">
-                System Isolation Active
+                An unexpected error occurred
               </h1>
               <p className="text-sm text-text-secondary leading-relaxed">
-                The Avenoir rendering engine has successfully isolated an interface fault and prevented a full application crash.
+                We're sorry for the inconvenience. Please try reloading the page to continue shopping.
               </p>
-              {this.state.error && (
-                <pre className="text-[10px] text-left p-3 bg-bg-elevated border border-border-subtle rounded-lg text-text-secondary font-mono overflow-auto max-h-32">
-                  {this.state.error.message}
-                </pre>
-              )}
             </div>
 
             <button
@@ -64,7 +59,7 @@ export default class ErrorBoundary extends Component<Props, State> {
               className="inline-flex items-center justify-center gap-2 w-full bg-accent-primary hover:bg-indigo-600 text-white font-semibold py-3.5 rounded-xl text-sm transition-all shadow-sm"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Reset Interface Engine</span>
+              <span>Reload Page</span>
             </button>
           </div>
         </div>
