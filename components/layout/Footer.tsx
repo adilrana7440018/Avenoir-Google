@@ -1,8 +1,24 @@
 'use client';
 
-import { ShieldCheck, Truck, RotateCcw, Send, Command } from 'lucide-react';
-import Link from 'next/link';
 import { useState } from 'react';
+import Link from 'next/link';
+
+const shopLinks = [
+  { label: 'Phone Cases', href: '/products/cases' },
+  { label: 'AirPods Cases', href: '/products/airpods' },
+  { label: 'Chargers', href: '/products/chargers' },
+  { label: 'Cables', href: '/products/cables' },
+  { label: 'Screen Protectors', href: '/products/screen-protectors' },
+  { label: 'MagSafe Accessories', href: '/products/magsafe' },
+];
+
+const supportLinks = [
+  { label: 'FAQ', href: '/support/faq' },
+  { label: 'Shipping & Returns', href: '/support/shipping-returns' },
+  { label: 'Warranty', href: '/support/warranty' },
+  { label: 'Contact Us', href: '/support/contact' },
+  { label: 'Track Order', href: '/support/track-order' },
+];
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -10,146 +26,196 @@ export default function Footer() {
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
-      setSubscribed(true);
-      setEmail('');
-    }
+    if (!email.trim()) return;
+    setSubscribed(true);
+    setEmail('');
   };
 
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-bg-primary border-t border-white/10 mt-auto font-mono text-xs">
-      {/* Guarantees Blueprint Strip */}
-      <div className="border-b border-white/10 bg-bg-secondary/30">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/10">
-          <div className="py-6 flex items-center gap-4 md:pr-6">
-            <Truck className="w-5 h-5 text-accent flex-shrink-0" />
-            <div className="space-y-0.5">
-              <h4 className="text-white font-bold tracking-widest text-[10px] uppercase">LOGISTICS // SAME-DAY</h4>
-              <p className="text-text-secondary text-[10px]">Orders processed before 14:00 EST dispatch instantly.</p>
-            </div>
-          </div>
-          <div className="py-6 flex items-center gap-4 md:px-6">
-            <ShieldCheck className="w-5 h-5 text-accent flex-shrink-0" />
-            <div className="space-y-0.5">
-              <h4 className="text-white font-bold tracking-widest text-[10px] uppercase">WARRANTY // LIFETIME</h4>
-              <p className="text-text-secondary text-[10px]">Aramid shells backed by structural replacement guarantee.</p>
-            </div>
-          </div>
-          <div className="py-6 flex items-center gap-4 md:pl-6">
-            <RotateCcw className="w-5 h-5 text-accent flex-shrink-0" />
-            <div className="space-y-0.5">
-              <h4 className="text-white font-bold tracking-widest text-[10px] uppercase">RETURNS // 30 DAYS</h4>
-              <p className="text-text-secondary text-[10px]">Plain-language return protocol. Zero generic hoops.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Main BluePrint Matrix */}
-      <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-10">
-        {/* Brand spec */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-1 text-white font-bold tracking-widest text-sm uppercase">
-            <Command className="w-4 h-4 text-accent" />
-            <span>AVENOIR // LABS</span>
-          </div>
-          <p className="text-text-secondary text-[10px] leading-relaxed">
-            SYSTEM_ID: LBS-M5-01 // Architectural shells milled from carbon composites and aramid synthetics. Optimized for maximum heat dispersion and kinetic absorption.
+    <footer className="bg-bg-elevated">
+      {/* Main grid */}
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-6 py-16 md:grid-cols-4">
+        {/* Column 1 — Brand */}
+        <div className="md:col-span-1">
+          <Link
+            href="/"
+            className="font-serif-display text-lg font-bold tracking-[0.2em] text-text-primary"
+          >
+            AVENOIR
+          </Link>
+          <p className="mt-4 text-sm leading-relaxed text-text-secondary">
+            Premium tech accessories designed for everyday protection. Minimal,
+            durable, made for your device.
           </p>
-          <div className="flex flex-wrap gap-2 text-[9px] pt-2">
-            {['TWITTER', 'INSTAGRAM', 'DISCORD', 'YOUTUBE'].map((social) => (
-              <a
-                key={social}
-                href="#"
-                className="px-2 py-0.5 rounded border border-white/10 hover:border-accent hover:text-accent transition-colors"
+
+          {/* Social links */}
+          <div className="mt-6 flex items-center gap-4">
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-text-secondary transition-colors hover:text-text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                {social}
-              </a>
-            ))}
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+              </svg>
+            </a>
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+              className="text-text-secondary transition-colors hover:text-text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+              </svg>
+            </a>
+            <a
+              href="https://tiktok.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok"
+              className="text-text-secondary transition-colors hover:text-text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+              </svg>
+            </a>
+            <a
+              href="https://pinterest.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Pinterest"
+              className="text-text-secondary transition-colors hover:text-text-primary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="12" y1="17" x2="12" y2="22" />
+                <path d="M5 12V7a7 7 0 0 1 14 0v5a5 5 0 0 1-10 0V7a3 3 0 0 1 6 0v5" />
+              </svg>
+            </a>
           </div>
         </div>
 
-        {/* Categories */}
-        <div className="space-y-4">
-          <h4 className="text-white font-bold tracking-widest text-[10px] uppercase border-b border-white/5 pb-2">
-            ARMORY_DIVISIONS
-          </h4>
-          <ul className="space-y-2 text-[10px]">
-            <li><Link href="/products/cases" className="text-text-secondary hover:text-white transition-colors">[01] COMPOSITE CASES</Link></li>
-            <li><Link href="/products/chargers" className="text-text-secondary hover:text-white transition-colors">[02] GAN FAST CHARGERS</Link></li>
-            <li><Link href="/products/cables" className="text-text-secondary hover:text-white transition-colors">[03] QUANTUM NYLON CABLES</Link></li>
-            <li><Link href="/products/audio" className="text-text-secondary hover:text-white transition-colors">[04] AIRPODS CASE COVERS</Link></li>
-            <li><Link href="/products/protectors" className="text-text-secondary hover:text-white transition-colors">[05] DOUBLE ION SCREEN GLASS</Link></li>
-            <li><Link href="/products/accessories" className="text-text-secondary hover:text-white transition-colors">[06] MODULAR STANDS & WALLETS</Link></li>
+        {/* Column 2 — Shop */}
+        <div>
+          <h4 className="mb-4 text-sm font-semibold text-text-primary">Shop</h4>
+          <ul className="flex flex-col gap-2.5">
+            {shopLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Support */}
-        <div className="space-y-4">
-          <h4 className="text-white font-bold tracking-widest text-[10px] uppercase border-b border-white/5 pb-2">
-            PROTOCOL_LINKS
+        {/* Column 3 — Support */}
+        <div>
+          <h4 className="mb-4 text-sm font-semibold text-text-primary">
+            Support
           </h4>
-          <ul className="space-y-2 text-[10px]">
-            <li><Link href="/faq" className="text-text-secondary hover:text-white transition-colors">[SUB] FAQS & DOCUMENTATION</Link></li>
-            <li><Link href="/returns" className="text-text-secondary hover:text-white transition-colors">[SUB] WARRANTY & REFUNDS</Link></li>
-            <li><Link href="/shipping" className="text-text-secondary hover:text-white transition-colors">[SUB] LOGISTICAL INFO</Link></li>
-            <li><Link href="/admin" className="text-accent hover:underline transition-colors font-semibold">[SYS] OPERATOR PANEL</Link></li>
+          <ul className="flex flex-col gap-2.5">
+            {supportLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className="text-sm text-text-secondary transition-colors hover:text-text-primary"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        {/* Newsletter Terminal */}
-        <div className="space-y-4">
-          <h4 className="text-white font-bold tracking-widest text-[10px] uppercase border-b border-white/5 pb-2">
-            NEWSLETTER_MANIFEST
+        {/* Column 4 — Newsletter */}
+        <div>
+          <h4 className="mb-4 text-sm font-semibold text-text-primary">
+            Newsletter
           </h4>
-          <p className="text-text-secondary text-[10px] leading-relaxed">
-            Queue your address to join the feed. Get immediate warnings on aramid milling collaborations.
+          <p className="mb-4 text-sm leading-relaxed text-text-secondary">
+            Be the first to hear about new arrivals, exclusive offers, and
+            styling inspiration.
           </p>
-          {!subscribed ? (
-            <form onSubmit={handleSubscribe} className="flex border border-white/10 rounded-xl bg-bg-secondary overflow-hidden focus-within:border-accent">
+
+          {subscribed ? (
+            <p className="text-sm font-medium text-accent-primary">
+              Thank you for subscribing ✦
+            </p>
+          ) : (
+            <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
               <input
                 type="email"
-                required
-                placeholder="USER@DOMAIN.COM"
+                placeholder="Your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-transparent px-3 py-2 text-[10px] text-white focus:outline-none w-full placeholder:text-text-secondary/30 uppercase"
+                required
+                className="rounded-xl border border-border-subtle bg-bg-base px-4 py-2 text-sm text-text-primary placeholder:text-text-secondary/50 outline-none transition-colors focus:border-accent-primary"
               />
               <button
                 type="submit"
-                className="bg-white/5 hover:bg-accent hover:text-bg-primary px-3 transition-colors flex items-center justify-center border-l border-white/10"
-                aria-label="Submit"
+                className="rounded-xl bg-accent-primary px-4 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
               >
-                <Send className="w-3 h-3" />
+                Subscribe
               </button>
             </form>
-          ) : (
-            <div className="bg-accent/15 border border-accent/30 rounded-xl p-2 text-accent text-[10px] font-semibold">
-              SYSTEM_QUEUE // EMAIL_REGISTERED
-            </div>
           )}
         </div>
       </div>
 
-      {/* BluePrint Footer coordinates */}
-      <div className="border-t border-white/10 py-6 bg-bg-secondary/20 text-[9px] text-text-secondary">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-wrap gap-4 items-center justify-center md:justify-start">
-            <span>&copy; {currentYear} AVENOIR LABS // ALL RIGHTS RESOLVED.</span>
-            <span className="hidden md:inline text-white/20">|</span>
-            <span>ZONE // IAD1.EAST</span>
-            <span className="hidden md:inline text-white/20">|</span>
-            <span>COORDS // 38.9072&deg; N, 77.0369&deg; W</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span>PCI_COMPLIANT</span>
-            <span>&bull;</span>
-            <span>SSL_ENCRYPTED</span>
-            <span>&bull;</span>
-            <span>STRIPE_ACTIVE</span>
-          </div>
+      {/* Bottom bar */}
+      <div className="border-t border-border-subtle">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-5 text-xs text-text-secondary sm:flex-row">
+          <p>&copy; {new Date().getFullYear()} Avenoir. All rights reserved.</p>
+          <p>Visa &bull; Mastercard &bull; Apple Pay &bull; Google Pay</p>
         </div>
       </div>
     </footer>

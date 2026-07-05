@@ -38,8 +38,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   if (!mounted) {
     return (
-      <div className="bg-bg-surface border border-border-subtle rounded-3xl p-3 sm:p-4 space-y-3 aspect-[4/5] animate-pulse">
-        <div className="bg-bg-elevated rounded-2xl w-full aspect-[4/5]" />
+      <div className="bg-bg-surface border border-border-subtle rounded-2xl p-3 sm:p-4 space-y-3 aspect-[4/5] animate-pulse">
+        <div className="bg-bg-elevated rounded-xl w-full aspect-[4/5]" />
         <div className="h-4 bg-bg-elevated rounded w-3/4" />
         <div className="h-3 bg-bg-elevated rounded w-1/2" />
       </div>
@@ -71,23 +71,35 @@ export default function ProductCard({ product }: ProductCardProps) {
     });
   };
 
+  // Category mapping
+  const categoryNames: Record<string, string> = {
+    cases: 'Phone Cases',
+    chargers: 'Chargers',
+    cables: 'Cables',
+    audio: 'AirPods Cases',
+    protectors: 'Screen Protectors',
+    accessories: 'Accessories',
+  };
+
+  const displayCategory = categoryNames[product.category] || product.category;
+
   return (
     <motion.div
-      whileTap={{ scale: 0.96 }}
+      whileTap={{ scale: 0.98 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={handleCardClick}
-      className="group relative bg-bg-surface border border-border-subtle rounded-3xl overflow-hidden transition-all duration-300 flex flex-col h-full hover:shadow-md hover:border-accent-primary/20 cursor-pointer"
+      className="group relative bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden transition-all duration-300 flex flex-col h-full hover:shadow-md cursor-pointer"
     >
       {/* Badges */}
-      <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
+      <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5 pointer-events-none">
         {discountPercent > 0 && (
-          <span className="bg-error text-white text-[9px] font-bold px-2 py-0.5 rounded-full font-mono">
+          <span className="bg-accent-primary text-white text-[9px] font-semibold px-2 py-0.5 rounded-full">
             -{discountPercent}%
           </span>
         )}
         {product.isFeatured && (
-          <span className="bg-accent-primary-soft border border-accent-primary/20 text-accent-primary text-[8px] font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm">
+          <span className="bg-accent-secondary text-white text-[8px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-sm">
             <Shield className="w-2.5 h-2.5" /> Featured
           </span>
         )}
@@ -100,14 +112,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           e.stopPropagation();
           toggleWishlist(product.id);
         }}
-        className={`absolute top-3 right-3 z-10 p-2 rounded-2xl border transition-all duration-300 ${
-          isWishlisted
-            ? 'bg-accent-primary-soft border-accent-primary/30 text-accent-primary'
-            : 'bg-white/90 border-border-subtle text-text-secondary hover:text-text-primary hover:border-text-tertiary backdrop-blur-sm'
-        }`}
+        className={`absolute top-3 right-3 z-10 p-1.5 rounded-full bg-white/80 backdrop-blur-sm transition-colors text-text-secondary hover:text-accent-primary`}
         aria-label="Add to wishlist"
       >
-        <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'fill-accent-primary' : ''}`} />
+        <Heart className={`w-3.5 h-3.5 ${isWishlisted ? 'text-accent-primary fill-accent-primary' : ''}`} />
       </button>
 
       {/* Image Container (Strict 4:5 Aspect Ratio) */}
@@ -126,25 +134,20 @@ export default function ProductCard({ product }: ProductCardProps) {
       </Link>
 
       {/* Details Section */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+      <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
         <div className="space-y-1">
-          <span className="text-[9px] uppercase font-bold text-text-tertiary font-mono tracking-widest block">
-            {product.category === 'cases' ? 'Phone Cases' :
-             product.category === 'chargers' ? 'GaN Chargers' :
-             product.category === 'cables' ? 'Braided Cables' :
-             product.category === 'audio' ? 'AirPods Shells' :
-             product.category === 'protectors' ? 'Screen Glass' :
-             product.category === 'accessories' ? 'MagSafe Accessories' : product.category}
+          <span className="text-[10px] font-medium text-accent-secondary block mb-1">
+            {displayCategory}
           </span>
           <Link href={`/products/${product.category}/${product.slug}`} className="block">
-            <h3 className="text-xs sm:text-sm font-bold text-text-primary group-hover:text-accent-primary transition-colors line-clamp-1 leading-tight">
+            <h3 className="text-xs sm:text-sm font-medium text-text-primary group-hover:text-accent-primary transition-colors line-clamp-1 leading-tight">
               {product.name}
             </h3>
           </Link>
-          <div className="text-[9px] font-mono text-accent-secondary uppercase tracking-widest line-clamp-1">
-            Fits: {product.compatibility}
+          <div className="text-[10px] text-text-secondary line-clamp-1">
+            {product.compatibility}
           </div>
-          <p className="text-[11px] sm:text-xs text-text-secondary line-clamp-2 min-h-8 hidden sm:block leading-relaxed">
+          <p className="text-[11px] text-text-secondary line-clamp-2 hidden sm:block mt-1 leading-relaxed">
             {product.description}
           </p>
         </div>
@@ -154,23 +157,23 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center gap-1.5">
               {product.discountPrice ? (
                 <>
-                  <span className="text-xs sm:text-sm font-bold text-accent-primary font-mono">
+                  <span className="text-sm font-semibold text-text-primary">
                     ${product.discountPrice.toFixed(2)}
                   </span>
-                  <span className="text-[10px] sm:text-xs text-text-tertiary line-through font-mono">
+                  <span className="text-xs text-text-tertiary line-through ml-1.5">
                     ${product.price.toFixed(2)}
                   </span>
                 </>
               ) : (
-                <span className="text-xs sm:text-sm font-bold text-text-primary font-mono">
+                <span className="text-sm font-semibold text-text-primary">
                   ${product.price.toFixed(2)}
                 </span>
               )}
             </div>
             {/* Rating */}
-            <div className="flex items-center gap-1 mt-0.5 text-[9px] sm:text-[10px] text-text-secondary">
-              <Star className="w-2.5 h-2.5 text-accent-warm fill-accent-warm" />
-              <span className="font-semibold text-text-primary font-mono">{product.rating}</span>
+            <div className="flex items-center gap-1 mt-1 text-[10px] text-text-secondary">
+              <Star className="w-3 h-3 text-accent-warm fill-accent-warm" />
+              <span className="font-medium text-text-primary">{product.rating}</span>
               <span className="text-text-tertiary">({product.reviewsCount})</span>
             </div>
           </div>
@@ -178,7 +181,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           {/* Quick Add Button */}
           <button
             onClick={handleAddToCart}
-            className="p-2 sm:p-2.5 bg-bg-elevated hover:bg-accent-primary text-text-primary hover:text-white border border-border-subtle hover:border-accent-primary rounded-xl transition-all duration-300"
+            className="p-2 bg-accent-primary text-white rounded-xl hover:opacity-90 transition-all duration-300"
             aria-label="Add to bag"
           >
             <ShoppingCartWrapper />

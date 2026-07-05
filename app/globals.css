@@ -1,56 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-base: #FAFAF9;
-  --color-bg-surface: #FFFFFF;
-  --color-bg-elevated: #F5F5F4;
+  /* Warm Luxury Palette - Avenoir Boutique */
+  --color-bg-base: #F3EFE4;
+  --color-bg-surface: #F8F5EE;
+  --color-bg-elevated: #E8E0D2;
   
-  --color-text-primary: #1C1917;
-  --color-text-secondary: #57534E;
+  --color-text-primary: #1E1713;
+  --color-text-secondary: #756D64;
   --color-text-tertiary: #A8A29E;
   
-  --color-accent-primary: #6366F1;
-  --color-accent-primary-soft: #E0E7FF;
+  --color-accent-primary: #8A7B6C;
+  --color-accent-primary-soft: #D8CFC2;
   
-  --color-accent-secondary: #14B8A6;
-  --color-accent-secondary-soft: #CCFBF1;
+  --color-accent-secondary: #B49A78;
+  --color-accent-secondary-soft: #E8E0D2;
   
-  --color-accent-warm: #F59E0B;
-  --color-accent-warm-soft: #FEF3C7;
+  --color-accent-warm: #B49A78;
+  --color-accent-warm-soft: #F3EFE4;
   
-  --color-border-subtle: #E7E5E4;
+  --color-border-subtle: #D8CFC2;
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(30, 23, 19, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(30, 23, 19, 0.06), 0 2px 6px -2px rgba(30, 23, 19, 0.04);
 }
 
 :root {
   color-scheme: light;
   
-  --bg-base: #FAFAF9;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #F5F5F4;
+  --bg-base: #F3EFE4;
+  --bg-surface: #F8F5EE;
+  --bg-elevated: #E8E0D2;
   
-  --text-primary: #1C1917;
-  --text-secondary: #57534E;
+  --text-primary: #1E1713;
+  --text-secondary: #756D64;
   --text-tertiary: #A8A29E;
   
-  --accent-primary: #6366F1;
-  --accent-primary-soft: #E0E7FF;
+  --accent-primary: #8A7B6C;
+  --accent-primary-soft: #D8CFC2;
   
-  --accent-secondary: #14B8A6;
-  --accent-secondary-soft: #CCFBF1;
+  --accent-secondary: #B49A78;
+  --accent-secondary-soft: #E8E0D2;
   
-  --accent-warm: #F59E0B;
-  --accent-warm-soft: #FEF3C7;
+  --accent-warm: #B49A78;
+  --accent-warm-soft: #F3EFE4;
   
-  --border-subtle: #E7E5E4;
+  --border-subtle: #D8CFC2;
   
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(30, 23, 19, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(30, 23, 19, 0.06), 0 2px 6px -2px rgba(30, 23, 19, 0.04);
 }
 
-/* Smooth physics scrolling */
+/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
   background-color: var(--bg-base);
@@ -59,15 +60,15 @@ html {
 body {
   background-color: var(--bg-base);
   color: var(--text-primary);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom premium scrollbar for Avenoir */
+/* Premium scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-base);
@@ -77,28 +78,50 @@ body {
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-tertiary);
+  background: var(--accent-primary);
 }
 
-/* Aura backlights */
-.aura-glow {
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
-}
-
-.aura-glow-teal {
-  background: radial-gradient(circle, rgba(20, 184, 166, 0.06) 0%, transparent 60%);
-}
-
-/* Glassmorphism components for Avenoir */
-.avenoir-glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
-}
-
-/* Custom Selection style */
+/* Selection style */
 ::selection {
   background-color: var(--accent-primary-soft);
   color: var(--accent-primary);
+}
+
+/* Hide scrollbar for horizontal scroll sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Serif heading utility */
+.font-serif-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
 }

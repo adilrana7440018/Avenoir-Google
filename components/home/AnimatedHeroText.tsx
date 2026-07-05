@@ -35,17 +35,17 @@ export default function AnimatedHeroText() {
       className="space-y-4"
     >
       <motion.h1 
-        className="text-4xl sm:text-5xl lg:text-6xl font-black text-text-primary tracking-tight leading-none uppercase"
+        className="font-serif-display text-4xl sm:text-5xl lg:text-6xl font-bold text-text-primary tracking-tight leading-[1.15]"
       >
         <motion.span variants={wordVariants} className="inline-block mr-3">
-          AVENOIR
+          Premium Tech
         </motion.span>
         <br />
         <motion.span 
           variants={wordVariants} 
-          className="text-accent-primary inline-block"
+          className="text-accent-secondary inline-block"
         >
-          ARAMID SHELLS
+          Accessories
         </motion.span>
       </motion.h1>
       
@@ -53,7 +53,7 @@ export default function AnimatedHeroText() {
         variants={wordVariants}
         className="text-sm sm:text-base text-text-secondary max-w-lg leading-relaxed pt-2"
       >
-        High-performance protective structures milled from aerospace composites and double-tempered aluminosilicate. Tailored for pure device alignment, impact absorption, and minimalist EDC loadouts.
+        Minimal, durable, and made to match your device. Designed with premium materials for everyday protection and a warm, modern aesthetic.
       </motion.p>
     </motion.div>
   );

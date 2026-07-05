@@ -1,29 +1,33 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 import CartDrawer from '@/components/cart/CartDrawer';
 import { PaddleProvider } from '@/components/cart/PaddleContext';
+import BottomNav from '@/components/layout/BottomNav';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const playfair = Playfair_Display({
+  variable: '--font-playfair',
   subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
   title: {
     template: '%s | AVENOIR',
-    default: 'AVENOIR | Premium Soft Aura Storefront',
+    default: 'AVENOIR | Premium Tech Accessories',
   },
   description:
-    'A high-performance light-themed e-commerce platform built with Next.js 16, React 19, and Tailwind CSS v4.',
-  keywords: ['avenoir', 'e-commerce', 'premium tech', 'light theme', 'soft design'],
+    'Premium phone cases, chargers, cables, and tech accessories. Minimal, durable, and designed to match your device.',
+  keywords: ['avenoir', 'phone cases', 'tech accessories', 'chargers', 'premium', 'iPhone cases', 'AirPods cases'],
 };
 
 export default function RootLayout({
@@ -34,16 +38,18 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-bg-base text-text-primary">
         <ErrorBoundary>
           <PaddleProvider>
             <Navbar />
-            <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex flex-col pb-16 md:pb-0">
               {children}
             </div>
+            <Footer />
             <CartDrawer />
+            <BottomNav />
           </PaddleProvider>
         </ErrorBoundary>
       </body>

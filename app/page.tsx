@@ -1,14 +1,17 @@
 import db from '@/lib/db';
 import AnimatedHeroText from '@/components/home/AnimatedHeroText';
 import HeroProductShowcase from '@/components/home/HeroProductShowcase';
+import FeaturedCategories from '@/components/home/FeaturedCategories';
+import TrustSection from '@/components/home/TrustSection';
+import ReviewsSection from '@/components/home/ReviewsSection';
 import ProductGrid from '@/components/product/ProductGrid';
 import Link from 'next/link';
-import { ArrowRight, Shield, Cpu, ShieldCheck } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import ErrorBoundary from '@/components/ErrorBoundary';
 
 export const metadata = {
-  title: 'AVENOIR | Soft Aura Premium Storefront',
-  description: 'Premium light-themed mobile covers, GaN chargers, and braided cables designed with materials science.',
+  title: 'AVENOIR | Premium Tech Accessories',
+  description: 'Premium phone cases, chargers, cables, and tech accessories. Minimal, durable, and designed to match your device.',
 };
 
 export default async function HomePage() {
@@ -16,13 +19,11 @@ export default async function HomePage() {
   let newArrivals: any[] = [];
   
   try {
-    // Fetch featured items
     featuredProducts = await db.product.findMany({
       where: { isFeatured: true },
       take: 4,
     });
 
-    // Fetch latest arrivals
     newArrivals = await db.product.findMany({
       orderBy: { id: 'desc' },
       take: 4,
@@ -33,94 +34,66 @@ export default async function HomePage() {
 
   return (
     <div className="flex-1 flex flex-col bg-bg-base">
-      {/* Dynamic light glowing backgrounds */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full aura-glow pointer-events-none -z-10" />
-      <div className="absolute top-1/3 right-1/4 w-[400px] h-[400px] rounded-full aura-glow-teal pointer-events-none -z-10" />
-
       {/* Hero Section */}
-      <section className="relative max-w-7xl mx-auto px-6 pt-12 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="max-w-7xl mx-auto w-full px-6 pt-8 pb-12 md:pt-12 md:pb-20 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         {/* Editorial copy */}
-        <div className="lg:col-span-7 space-y-6 sm:space-y-8">
+        <div className="space-y-6 order-2 lg:order-1">
           <ErrorBoundary>
             <AnimatedHeroText />
           </ErrorBoundary>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
             <Link
               href="/products/all"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-text-primary hover:bg-accent-primary text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-accent-primary hover:bg-accent-primary/90 text-white font-medium rounded-xl text-sm transition-all shadow-sm"
             >
-              <span>Explore Armory</span>
+              <span>Shop Collection</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/guides"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white hover:bg-bg-elevated text-text-primary border border-border-subtle font-bold rounded-xl text-xs uppercase tracking-wider transition-all"
+              href="/products/cases"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-bg-surface hover:bg-bg-elevated text-text-primary border border-border-subtle font-medium rounded-xl text-sm transition-all"
             >
-              Material Science Logs
+              Explore Cases
             </Link>
           </div>
         </div>
 
-        {/* Overlapping clean graphic showcase replacing 3D Canvas */}
-        <div className="lg:col-span-5 w-full h-[350px] md:h-[450px]">
+        {/* Product showcase */}
+        <div className="order-1 lg:order-2 flex justify-center">
           <ErrorBoundary>
             <HeroProductShowcase />
           </ErrorBoundary>
         </div>
       </section>
 
-      {/* Differentiators Grid */}
-      <section className="border-y border-border-subtle bg-bg-surface py-12">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="space-y-2">
-            <div className="w-10 h-10 bg-accent-primary-soft text-accent-primary rounded-xl flex items-center justify-center">
-              <Shield className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">Aramid Shielding</h3>
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Milled from bulletproof polyamides. Extreme puncture resilience wrapped in soft sand textures.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <div className="w-10 h-10 bg-accent-secondary-soft text-accent-secondary rounded-xl flex items-center justify-center">
-              <Cpu className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">GaN Fast Circuits</h3>
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Gallium Nitride charging hubs. Twice the capacity at half the size, running cool below 45°C.
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <div className="w-10 h-10 bg-accent-warm-soft text-accent-warm rounded-xl flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <h3 className="text-sm font-bold text-text-primary uppercase tracking-wider">Secure Checkouts</h3>
-            <p className="text-xs text-text-secondary leading-relaxed">
-              Integrated merchant processing via Paddle encryption. Lifetime coverage on every component.
-            </p>
-          </div>
-        </div>
+      {/* Featured Categories */}
+      <section className="py-8 md:py-12">
+        <ErrorBoundary>
+          <FeaturedCategories />
+        </ErrorBoundary>
       </section>
 
-      {/* Featured Products Catalog Section */}
-      <section className="max-w-7xl mx-auto px-6 py-16 space-y-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-text-primary uppercase tracking-tight">
-              Featured Hardware
+      {/* Trust Section */}
+      <TrustSection />
+
+      {/* Featured Products */}
+      <section className="max-w-7xl mx-auto w-full px-6 py-12 md:py-16 space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h2 className="font-serif-display text-2xl sm:text-3xl text-text-primary">
+              Featured Collection
             </h2>
-            <p className="text-xs text-text-secondary max-w-md">
-              Selected premium loadouts ready for dispatch.
+            <p className="text-sm text-text-secondary mt-1">
+              Our most popular premium accessories.
             </p>
           </div>
           <Link
             href="/products/all"
-            className="text-xs font-bold text-accent-primary hover:underline flex items-center gap-1 font-mono uppercase tracking-wider"
+            className="text-sm font-medium text-accent-primary hover:text-accent-primary/80 flex items-center gap-1 transition-colors"
           >
-            Browse Catalog &rarr;
+            View all
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -129,19 +102,19 @@ export default async function HomePage() {
         </ErrorBoundary>
       </section>
 
-      {/* New Arrivals Section */}
-      <section className="max-w-7xl mx-auto px-6 py-16 pb-24 space-y-12 border-t border-border-subtle">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl font-black text-text-primary uppercase tracking-tight">
-              New Arrivals
+      {/* New Arrivals */}
+      <section className="max-w-7xl mx-auto w-full px-6 py-12 md:py-16 space-y-8 border-t border-border-subtle">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h2 className="font-serif-display text-2xl sm:text-3xl text-text-primary">
+              Latest Drops
             </h2>
-            <p className="text-xs text-text-secondary max-w-md">
-              Freshly engineered and recently added device loadouts.
+            <p className="text-sm text-text-secondary mt-1">
+              Freshly designed and recently added.
             </p>
           </div>
-          <span className="text-[10px] font-mono tracking-widest text-text-tertiary bg-bg-elevated px-3 py-1 rounded-full uppercase border border-border-subtle">
-            LATEST MANIFESTS
+          <span className="text-xs font-medium text-accent-secondary bg-accent-secondary/10 px-3 py-1 rounded-full">
+            New In
           </span>
         </div>
 
@@ -150,10 +123,8 @@ export default async function HomePage() {
         </ErrorBoundary>
       </section>
 
-      {/* Technical Footer */}
-      <footer className="border-t border-border-subtle bg-bg-surface py-8 text-center text-[10px] text-text-secondary font-mono tracking-wider">
-        <p>&copy; {new Date().getFullYear()} AVENOIR LABS // ALL SPECIFICATIONS DEPLOYED.</p>
-      </footer>
+      {/* Customer Reviews */}
+      <ReviewsSection />
     </div>
   );
 }
